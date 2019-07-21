@@ -1,0 +1,7 @@
+server:
+  port: 7900
+sin:
+  system-admin:
+    token: 65day
+    iv:
+    key:
