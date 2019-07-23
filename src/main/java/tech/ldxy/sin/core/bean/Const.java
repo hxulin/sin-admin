@@ -6,8 +6,6 @@ package tech.ldxy.sin.core.bean;
  * @author hxulin
  */
 public interface Const {
-
-    String LOCAL_IP = "127.0.0.1";
 	
     /**
      * 日期格式化类型

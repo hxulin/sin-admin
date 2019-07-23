@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import tech.ldxy.sin.core.bean.ApiResponse;
 import tech.ldxy.sin.core.util.encryption.AESUtils;
 import tech.ldxy.sin.core.util.json.JSONUtils;
-import tech.ldxy.sin.system.auth.OpenResource;
 
 /**
  * 功能描述:
@@ -44,7 +43,6 @@ public class SystemAdminController {
     private long timestamp;
 
     @GetMapping("/fastLogin")
-    @OpenResource
     public ApiResponse fastLogin(String token) {
         if (StringUtils.isBlank(token)) {
             return ApiResponse.notValidParam();

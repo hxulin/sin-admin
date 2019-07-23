@@ -2,6 +2,7 @@ package tech.ldxy.sin.system.model.vo;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import tech.ldxy.sin.system.model.entity.User;
 
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
  * @author hxulin
  */
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class LoginInfo extends User {
 

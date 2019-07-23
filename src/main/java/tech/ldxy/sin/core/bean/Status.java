@@ -12,6 +12,7 @@ public enum Status {
     NOT_LOGIN(401, "用户尚未登录。"),
     FORBIDDEN(403, "权限不足，拒绝访问。"),
     NOT_FOUND(404, "请求的资源不存在或者已经被删除。"),
+    METHOD_NOT_ALLOWED(405, "HTTP请求方法不支持。"),
     INTERNAL_SERVER_ERROR(500, "发生未知错误，请求失败。");
 
     private int code;

@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RequirePermission {
-    AuthTypeEnum value() default AuthTypeEnum.OPEN;
+public @interface Resources {
+    AuthType value() default AuthType.OPEN;
 }

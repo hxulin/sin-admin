@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import tech.ldxy.sin.core.bean.Status;
 import tech.ldxy.sin.core.exception.BusinessException;
 import tech.ldxy.sin.core.bean.ApiResponse;
 
@@ -37,6 +38,8 @@ public class AppErrorController implements ErrorController {
                     return ApiResponse.notValidParam();
                 case 404:
                     return ApiResponse.notFound();
+                case 405:
+                    return ApiResponse.create(status, Status.METHOD_NOT_ALLOWED.getMsg());
             }
         }
         Throwable throwable = (Throwable) request.getAttribute("javax.servlet.error.exception");

@@ -1,5 +1,9 @@
 server:
   port: 7900
+spring:
+  datasource:
+    druid:
+      password: 12345678
 sin:
   system-admin:
     token: 65day

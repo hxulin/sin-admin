@@ -1,7 +1,6 @@
 package tech.ldxy.sin.core.util;
 
 import org.apache.commons.lang3.StringUtils;
-import tech.ldxy.sin.core.bean.Const;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
  * @author hxulin
  */
 public final class IpUtils {
+
+    private static final String LOCAL_IP = "127.0.0.1";
 
     private IpUtils() {
 
@@ -51,7 +52,7 @@ public final class IpUtils {
                 ip = ip.substring(0, ip.indexOf(","));
             }
         }
-        return "0:0:0:0:0:0:0:1".equals(ip) ? Const.LOCAL_IP : ip;
+        return "0:0:0:0:0:0:0:1".equals(ip) ? LOCAL_IP : ip;
     }
 
 }

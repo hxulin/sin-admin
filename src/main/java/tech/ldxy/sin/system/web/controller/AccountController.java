@@ -5,9 +5,10 @@ import org.springframework.web.bind.annotation.*;
 import tech.ldxy.sin.core.bean.ApiResponse;
 import tech.ldxy.sin.core.exception.BusinessExceptionAware;
 import tech.ldxy.sin.core.util.Captcha;
+import tech.ldxy.sin.system.auth.AuthType;
+import tech.ldxy.sin.system.auth.Resources;
 import tech.ldxy.sin.system.context.UserContext;
 import tech.ldxy.sin.core.util.IpUtils;
-import tech.ldxy.sin.system.auth.OpenResource;
 import tech.ldxy.sin.system.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +24,7 @@ import java.util.Map;
  * @author hxulin
  */
 @Controller
-@OpenResource
+@Resources(AuthType.AUTH)
 public class AccountController implements BusinessExceptionAware {
 
     @GetMapping("/static/images/securityCode.png")
@@ -43,7 +44,7 @@ public class AccountController implements BusinessExceptionAware {
     @PostMapping("/login")
     @ResponseBody
     public ApiResponse login(String username, String password) {
-        UserContext.register(new User(username, password));
+        UserContext.login(new User(username, password));
         return ApiResponse.successOfMessage("登录成功。");
     }
 
@@ -86,7 +87,7 @@ public class AccountController implements BusinessExceptionAware {
     @GetMapping("/test2")
     @ResponseBody
     public ApiResponse test() {
-        throw error("23");
+        throw error("Error");
 //        return ApiResponse.success();
     }
 }

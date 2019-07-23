@@ -48,19 +48,31 @@ public class ApiAuthCheck implements BusinessExceptionAware {
 
     private void checkPermission(ProceedingJoinPoint pjp) {
         Method method = ((MethodSignature) pjp.getSignature()).getMethod();
-        OpenResource openResource = method.getAnnotation(OpenResource.class);
-        if (openResource == null) {
+        Resources methodResources = method.getAnnotation(Resources.class);
+        if (methodResources != null) {
+            checkPermission(methodResources);
+        } else {
             Class<?> targetClass = pjp.getTarget().getClass();
-            if (targetClass.getAnnotation(OpenResource.class) == null) {
-                // 1、检查用户是否登录
+            Resources classResources = targetClass.getAnnotation(Resources.class);
+            if (classResources != null) {
+                checkPermission(classResources);
+            }
+        }
+    }
+
+    private void checkPermission(Resources resources) {
+        switch (resources.value()) {
+            case LOGIN:
+                // 检查用户是否登录
                 if (UserContext.getCurrent() == null) {
                     throw error(Status.NOT_LOGIN);
                 }
-                // 2、检查用户对当前资源是否有访问权限
-                if (!UserContext.hasPermission(AppContext.getRequest().getRequestURI())) {
-                    throw error(Status.FORBIDDEN);
-                }
-            }
+                break;
+            case AUTH:
+                // 检查用户对当前资源是否有访问权限
+                System.out.println(AppContext.getRequest().getRequestURI());
+                System.out.println(AppContext.getRequest().getParameterNames());
+                break;
         }
     }
 }

@@ -1,7 +1,8 @@
 package tech.ldxy.sin.core.model.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import tech.ldxy.sin.core.model.Convert;
 
 import java.util.Objects;
@@ -16,6 +17,7 @@ public class BaseEntity extends Convert {
 
     private static final long serialVersionUID = 1368974545982624643L;
 
+    @TableId(value = "id", type = IdType.ID_WORKER)
     protected Long id;
 
     @Override

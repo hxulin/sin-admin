@@ -55,7 +55,7 @@ public final class UserContext {
     }
 
     // 用户登录
-    public static void register(User user) {
+    public static void login(User user) {
         LoginInfo loginInfo = user.convert(LoginInfo.class);
         loginInfo.setLoginIp(IpUtils.getIpAddr(AppContext.getRequest()));
         loginInfo.setLoginTime(new Date());
