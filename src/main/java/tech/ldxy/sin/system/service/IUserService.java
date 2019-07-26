@@ -11,4 +11,15 @@ import tech.ldxy.sin.system.model.entity.User;
  */
 public interface IUserService extends IService<User>, BusinessExceptionAware {
 
+    /**
+     * 用户登录
+     *
+     * @param loginName 登录名
+     * @param password  密码
+     * @param captcha   验证码
+     * @param token     验证码Token
+     * @return 登录成功后的加密会话Token
+     */
+    String login(String loginName, String password, String captcha, String token);
+
 }

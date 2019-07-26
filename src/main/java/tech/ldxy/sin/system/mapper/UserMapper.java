@@ -12,5 +12,6 @@ import tech.ldxy.sin.system.model.entity.User;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 
+    User selectByLoginName(String loginName);
 
 }

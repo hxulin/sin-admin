@@ -1,20 +1,22 @@
 package tech.ldxy.sin.system.web.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import tech.ldxy.sin.core.bean.ApiResponse;
 import tech.ldxy.sin.core.exception.BusinessExceptionAware;
 import tech.ldxy.sin.core.util.Captcha;
-import tech.ldxy.sin.system.auth.AuthType;
-import tech.ldxy.sin.system.auth.Resources;
+import tech.ldxy.sin.core.util.UUIDUtils;
+import tech.ldxy.sin.system.common.Constant;
 import tech.ldxy.sin.system.context.UserContext;
 import tech.ldxy.sin.core.util.IpUtils;
 import tech.ldxy.sin.system.model.entity.User;
+import tech.ldxy.sin.system.service.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,8 +26,10 @@ import java.util.Map;
  * @author hxulin
  */
 @Controller
-@Resources(AuthType.AUTH)
 public class AccountController implements BusinessExceptionAware {
+
+    @Autowired
+    private IUserService userService;
 
     @GetMapping("/static/images/securityCode.png")
     public void code(HttpServletResponse response) throws IOException {
@@ -35,17 +39,20 @@ public class AccountController implements BusinessExceptionAware {
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
-        Captcha captcha = new Captcha(100, 38, 4, 10);
+        String captchaToken = UUIDUtils.createUUID();
+        response.setHeader(Constant.TOKEN_KEY, captchaToken);
+        Captcha captcha = new Captcha(80, 32, 4, 10);
         // 将验证码信息保存到Session中
-        UserContext.setCaptcha(captcha.getCode());
+        UserContext.setCaptcha(captchaToken, captcha.getCode());
         captcha.write(response.getOutputStream());
     }
 
     @PostMapping("/login")
     @ResponseBody
-    public ApiResponse login(String username, String password) {
-        UserContext.login(new User(username, password));
-        return ApiResponse.successOfMessage("登录成功。");
+    public ApiResponse login(@RequestParam String loginName, @RequestParam String password,
+                             @RequestParam String captcha, @RequestParam String token) {
+        String loginToken = userService.login(loginName, password, captcha, token);
+        return ApiResponse.successOfData(loginToken);
     }
 
     @GetMapping("/current")
@@ -75,7 +82,7 @@ public class AccountController implements BusinessExceptionAware {
     @ResponseBody
     public ApiResponse test(HttpServletRequest request) {
         Map<String, Object> data = new HashMap<>();
-        data.put("current", new Date());
+        data.put("current", LocalDateTime.now());
 
         System.out.println(request.getRequestURI());
 

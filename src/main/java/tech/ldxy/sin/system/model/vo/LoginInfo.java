@@ -2,8 +2,7 @@ package tech.ldxy.sin.system.model.vo;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import tech.ldxy.sin.system.model.entity.User;
+import tech.ldxy.sin.core.model.entity.BaseEntity;
 
 import java.util.Date;
 
@@ -13,11 +12,14 @@ import java.util.Date;
  * @author hxulin
  */
 @Data
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class LoginInfo extends User {
+public class LoginInfo extends BaseEntity {
 
-    private static final long serialVersionUID = 2845415606194265336L;
+    private static final long serialVersionUID = -5252587862968558687L;
+
+    private String loginName;
+
+    private String nickname;
 
     private String loginIp;
 

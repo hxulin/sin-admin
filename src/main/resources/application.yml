@@ -13,7 +13,7 @@ spring:
       filters: stat
       driver-class-name: com.mysql.cj.jdbc.Driver
       #基本属性
-      url: jdbc:mysql:///sin_admin?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+      url: jdbc:mysql:///sin_admin?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
       username: root
       # password: 12345678
       # 配置初始化大小/最小/最大
@@ -57,3 +57,4 @@ spring:
 mybatis-plus:
   global-config:
     banner: false
+  mapper-locations: classpath:mapper/*Mapper.xml

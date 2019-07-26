@@ -4,7 +4,13 @@ spring:
   datasource:
     druid:
       password: 12345678
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 sin:
+  config:
+    token-aes-key: 9h15t21ngWZ9287V
+    token-aes-iv: vd2J9k857YdJG8HI
   system-admin:
     token: 65day
     iv:

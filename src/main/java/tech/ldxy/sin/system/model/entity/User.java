@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import tech.ldxy.sin.core.model.entity.BaseEntity;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 功能描述: 用户实体类
@@ -21,7 +21,11 @@ import java.time.LocalDateTime;
 @TableName("sys_user")
 public class User extends BaseEntity {
 
-    private static final long serialVersionUID = 5778560956583602615L;
+    private static final long serialVersionUID = -280420620597330919L;
+
+    public static final int NORMAL_STATUS = 0;
+
+    public static final int LOCK_STATUS = 1;
 
     /**
      * 登录名
@@ -41,7 +45,7 @@ public class User extends BaseEntity {
     /**
      * 状态
      */
-    private Integer status;
+    private int status;
 
     /**
      * 创建人ID
@@ -59,13 +63,13 @@ public class User extends BaseEntity {
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
+    private Date createTime;
 
     /**
      * 修改时间
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
+    private Date updateTime;
 
     public User(String loginName, String password) {
         this.loginName = loginName;

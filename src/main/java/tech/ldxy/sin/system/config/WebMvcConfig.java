@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import tech.ldxy.sin.system.common.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,8 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedMethods("*")
-                .allowedHeaders("*");
+                .allowedHeaders("*")
+                .exposedHeaders(Constant.TOKEN_KEY);
     }
 
     /**
