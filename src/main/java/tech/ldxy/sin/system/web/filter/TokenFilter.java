@@ -17,9 +17,9 @@ public class TokenFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) {
         HttpServletRequest request = (HttpServletRequest) req;
         String token = request.getHeader(Constant.TOKEN_KEY);
-        // Token 续约
-        UserContext.refreshToken(token);
         ContextManager.addAttribute(Constant.TOKEN_KEY, token);
+        // Token 续约
+        UserContext.refreshToken();
         try {
             chain.doFilter(request, resp);
         } catch (Exception e) {
@@ -27,7 +27,6 @@ public class TokenFilter implements Filter {
         } finally {
             ContextManager.removeContext();
         }
-
     }
 
 }

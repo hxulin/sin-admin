@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import tech.ldxy.sin.core.bean.Status;
 import tech.ldxy.sin.core.exception.BusinessExceptionAware;
 import tech.ldxy.sin.core.web.controller.AppErrorController;
 import tech.ldxy.sin.system.context.AppContext;
@@ -68,7 +67,9 @@ public class ApiAuthCheck implements BusinessExceptionAware {
                 break;
             case AUTH:
                 // 检查用户对当前资源是否有访问权限
-                System.out.println(AppContext.getRequest().getRequestURI());
+                if (!UserContext.hasPermission(AppContext.getRequest().getRequestURI())) {
+
+                }
                 System.out.println(AppContext.getRequest().getParameterNames());
                 break;
         }

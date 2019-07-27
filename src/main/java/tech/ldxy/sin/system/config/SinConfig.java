@@ -16,6 +16,10 @@ public class SinConfig {
 
     private String tokenAesIv;
 
+    private int tokenExpireTime = 30;
+
+    private int captchaExpireTime = 10;
+
     public String getTokenAesKey() {
         return tokenAesKey;
     }
@@ -30,5 +34,21 @@ public class SinConfig {
 
     public void setTokenAesIv(String tokenAesIv) {
         this.tokenAesIv = tokenAesIv;
+    }
+
+    public int getTokenExpireTime() {
+        return tokenExpireTime;
+    }
+
+    public void setTokenExpireTime(int tokenExpireTime) {
+        this.tokenExpireTime = tokenExpireTime;
+    }
+
+    public int getCaptchaExpireTime() {
+        return captchaExpireTime;
+    }
+
+    public void setCaptchaExpireTime(int captchaExpireTime) {
+        this.captchaExpireTime = captchaExpireTime;
     }
 }

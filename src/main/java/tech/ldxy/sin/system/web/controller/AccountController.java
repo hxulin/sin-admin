@@ -44,7 +44,7 @@ public class AccountController implements BusinessExceptionAware {
         String captchaToken = UUIDUtils.createUUID();
         response.setHeader(Constant.TOKEN_KEY, captchaToken);
         Captcha captcha = new Captcha(80, 32, 4, 10);
-        // 将验证码信息保存到Session中
+        // 将验证码信息保存到缓存中
         UserContext.setCaptcha(captchaToken, captcha.getCode());
         captcha.write(response.getOutputStream());
     }

@@ -14,7 +14,6 @@ import tech.ldxy.sin.system.model.vo.LoginInfo;
 import tech.ldxy.sin.system.util.SinAssert;
 import tech.ldxy.sin.system.web.filter.ContextManager;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +32,10 @@ public final class UserContext {
     private static final String CAPTCHA_PREFIX = "captcha:";
 
     private static final String TOKEN_PREFIX = "token:";
+
+    private static final String USER_PREFIX = "user:";
+
+    private static final String RESOURCE_SUFFIX = ":resource";
 
     private UserContext() {
 
@@ -55,7 +58,7 @@ public final class UserContext {
 
     // 保存登录页面的验证码到缓存中
     public static void setCaptcha(String key, String captcha) {
-        redisTemplate.opsForValue().set(CAPTCHA_PREFIX + key, captcha, 10, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(CAPTCHA_PREFIX + key, captcha, sinConfig.getCaptchaExpireTime(), TimeUnit.MINUTES);
     }
 
     // 从缓存中删除验证码信息
@@ -79,14 +82,15 @@ public final class UserContext {
         LoginInfo loginInfo = user.convert(LoginInfo.class);
         loginInfo.setLoginTime(current);
         loginInfo.setLoginIp(loginIp);
-        redisTemplate.opsForValue().set(TOKEN_PREFIX + token, loginInfo, 30, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(TOKEN_PREFIX + token, loginInfo, sinConfig.getTokenExpireTime(), TimeUnit.MINUTES);
         return token;
     }
 
     // 刷新 Token 的过期时间
-    public static void refreshToken(String token) {
+    public static void refreshToken() {
+        String token = ContextManager.getAttribute(Constant.TOKEN_KEY);
         if (StringUtils.isNotEmpty(token)) {
-
+            redisTemplate.expire(TOKEN_PREFIX + token, sinConfig.getTokenExpireTime(), TimeUnit.MINUTES);
         }
     }
 
@@ -101,16 +105,18 @@ public final class UserContext {
 
     // 用户注销登录
     public static void logout() {
-        AppContext.getSession().invalidate();
+        String token = ContextManager.getAttribute(Constant.TOKEN_KEY);
+        if (StringUtils.isNotEmpty(token)) {
+            redisTemplate.delete(TOKEN_PREFIX + token);
+        }
     }
 
     /**
-     * 检查当前用户是否具有访问本资源的权限
+     * 检查当前用户是否具有访问该资源的权限
      */
     public static boolean hasPermission(String requestURI) {
-        HttpServletRequest request = AppContext.getRequest();
-        String token = request.getHeader(Constant.TOKEN_KEY);
-        System.out.println(token);
-        return requestURI != null;
+        Long id = getCurrentLoginInfo().getId();
+        String resourceKey = USER_PREFIX + id + RESOURCE_SUFFIX;
+        return redisTemplate.opsForSet().isMember(resourceKey, requestURI);
     }
 }

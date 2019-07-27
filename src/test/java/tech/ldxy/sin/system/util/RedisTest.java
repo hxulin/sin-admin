@@ -34,7 +34,7 @@ public class RedisTest extends ApplicationTests {
 //
 //        stringRedisTemplate.expire("aaaa", 10, TimeUnit.SECONDS);
 
-        redisTemplate.opsForValue().set("user", "user", 100, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set("1234567", "user", 100, TimeUnit.SECONDS);
 
         Object user1 = redisTemplate.opsForValue().get("user");
 
@@ -50,5 +50,22 @@ public class RedisTest extends ApplicationTests {
 //        Assert.assertEquals("111", stringRedisTemplate.opsForValue().get("aaa"));
 //        System.out.println(1222);
 
+    }
+
+    @Test
+    public void testExpire() {
+        redisTemplate.expire("1234567", 30, TimeUnit.MINUTES);
+    }
+
+    @Test
+    public void testSet() {
+
+        Boolean member = redisTemplate.opsForSet().isMember("user:157:resource", 2);
+
+        System.out.println(member);
+
+//        redisTemplate.opsForSet().add("user:157:resource", 1, 2, 3);
+//        redisTemplate.opsForSet().add("user:158:resource", 1, 2, 3);
+//        redisTemplate.opsForSet().add("user:157:resource", 2, 3, 4);
     }
 }

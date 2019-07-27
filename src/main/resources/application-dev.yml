@@ -11,6 +11,8 @@ sin:
   config:
     token-aes-key: 9h15t21ngWZ9287V
     token-aes-iv: vd2J9k857YdJG8HI
+    token-expire-time: 30
+    captcha-expire-time: 10
   system-admin:
     token: 65day
     iv:
