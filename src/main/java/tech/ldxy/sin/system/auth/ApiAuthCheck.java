@@ -64,9 +64,7 @@ public class ApiAuthCheck implements BusinessExceptionAware {
         switch (resources.value()) {
             case LOGIN:
                 // 检查用户是否登录
-                if (UserContext.getCurrent() == null) {
-                    throw error(Status.NOT_LOGIN);
-                }
+                UserContext.getCurrentLoginInfo();
                 break;
             case AUTH:
                 // 检查用户对当前资源是否有访问权限

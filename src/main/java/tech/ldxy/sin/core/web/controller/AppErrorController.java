@@ -1,15 +1,14 @@
 package tech.ldxy.sin.core.web.controller;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import tech.ldxy.sin.core.bean.Status;
 import tech.ldxy.sin.core.exception.BusinessException;
 import tech.ldxy.sin.core.bean.ApiResponse;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -29,8 +28,8 @@ public class AppErrorController implements ErrorController {
     }
 
     @RequestMapping(ERROR_PATH)
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponse errorApiHandler(HttpServletRequest request) {
+    // @ResponseStatus(HttpStatus.OK)
+    public ApiResponse errorApiHandler(HttpServletRequest request, HttpServletResponse response) {
         Integer status = (Integer) request.getAttribute("javax.servlet.error.status_code");
         if (status != null) {
             switch (status) {
@@ -56,7 +55,9 @@ public class AppErrorController implements ErrorController {
             if (throwable instanceof BusinessException) {
                 // 业务异常, 记录一般性日志
                 BusinessException ex = (BusinessException) throwable;
-
+                if (ex.getCode() == 401 || ex.getCode() == 403) {
+                    response.setStatus(ex.getCode());
+                }
 
                 System.err.println(stackTrace);
                 return ApiResponse.create(ex.getCode(), ex.getMsg());

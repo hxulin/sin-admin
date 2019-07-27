@@ -4,13 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import tech.ldxy.sin.core.bean.ApiResponse;
+import tech.ldxy.sin.core.bean.Status;
 import tech.ldxy.sin.core.exception.BusinessExceptionAware;
 import tech.ldxy.sin.core.util.Captcha;
 import tech.ldxy.sin.core.util.UUIDUtils;
+import tech.ldxy.sin.system.auth.AuthType;
+import tech.ldxy.sin.system.auth.Resources;
 import tech.ldxy.sin.system.common.Constant;
 import tech.ldxy.sin.system.context.UserContext;
 import tech.ldxy.sin.core.util.IpUtils;
-import tech.ldxy.sin.system.model.entity.User;
 import tech.ldxy.sin.system.service.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,11 +60,7 @@ public class AccountController implements BusinessExceptionAware {
     @GetMapping("/current")
     @ResponseBody
     public ApiResponse current() {
-        User user = UserContext.getCurrent();
-        if (user != null) {
-            return ApiResponse.successOfData(user);
-        }
-        return ApiResponse.notLogin();
+        return ApiResponse.successOfData(UserContext.getCurrentLoginInfo());
     }
 
     @GetMapping("/logout")
@@ -94,7 +92,7 @@ public class AccountController implements BusinessExceptionAware {
     @GetMapping("/test2")
     @ResponseBody
     public ApiResponse test() {
-        throw error("Error");
+        throw error(Status.NOT_LOGIN);
 //        return ApiResponse.success();
     }
 }

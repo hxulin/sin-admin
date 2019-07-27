@@ -1,14 +1,18 @@
 package tech.ldxy.sin.system.context;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import tech.ldxy.sin.core.bean.Status;
 import tech.ldxy.sin.core.util.IpUtils;
 import tech.ldxy.sin.core.util.encryption.AESUtils;
 import tech.ldxy.sin.system.common.Constant;
 import tech.ldxy.sin.system.config.SinConfig;
 import tech.ldxy.sin.system.model.entity.User;
 import tech.ldxy.sin.system.model.vo.LoginInfo;
+import tech.ldxy.sin.system.util.SinAssert;
+import tech.ldxy.sin.system.web.filter.ContextManager;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -29,9 +33,6 @@ public final class UserContext {
     private static final String CAPTCHA_PREFIX = "captcha:";
 
     private static final String TOKEN_PREFIX = "token:";
-
-    private static final String LOGIN_INFO_IN_SESSION = "login_info_in_session";
-
 
     private UserContext() {
 
@@ -57,6 +58,7 @@ public final class UserContext {
         redisTemplate.opsForValue().set(CAPTCHA_PREFIX + key, captcha, 10, TimeUnit.MINUTES);
     }
 
+    // 从缓存中删除验证码信息
     public static void removeCaptcha(String key) {
         redisTemplate.delete(CAPTCHA_PREFIX + key);
     }
@@ -81,17 +83,21 @@ public final class UserContext {
         return token;
     }
 
+    // 刷新 Token 的过期时间
+    public static void refreshToken(String token) {
+        if (StringUtils.isNotEmpty(token)) {
+
+        }
+    }
+
     // 获取当前登录信息
     public static LoginInfo getCurrentLoginInfo() {
-        return (LoginInfo) AppContext.getSession().getAttribute(LOGIN_INFO_IN_SESSION);
+        Object token = ContextManager.getAttribute(Constant.TOKEN_KEY);
+        SinAssert.INSTANCE.assertNotNull(token, Status.NOT_LOGIN);
+        Object loginInfo = redisTemplate.opsForValue().get(TOKEN_PREFIX + token);
+        SinAssert.INSTANCE.assertNotNull(loginInfo, Status.NOT_LOGIN);
+        return (LoginInfo) loginInfo;
     }
-
-    // 获取当前登录用户信息
-    public static User getCurrent() {
-        return getCurrentLoginInfo().convert(User.class);
-    }
-
-
 
     // 用户注销登录
     public static void logout() {
