@@ -1,6 +1,7 @@
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
+/src/test/java/tech/ldxy/sin/*/
 application-prod.yml
 
 ### STS ###
