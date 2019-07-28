@@ -9,6 +9,7 @@ import tech.ldxy.sin.core.bean.ApiResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -61,6 +62,10 @@ public class AppErrorController implements ErrorController {
 
                 System.err.println(stackTrace);
                 return ApiResponse.create(ex.getCode(), ex.getMsg());
+            } else if (throwable instanceof ConstraintViolationException) {
+                // 请求参数校验异常
+                response.setStatus(Status.NOT_VALID_PARAM.getCode());
+                return ApiResponse.notValidParam();
             } else {
                 // 未知类型异常, 记录严重性日志, 发送邮件提醒
                 System.err.println("未知类型异常, 记录日志, 发送邮件提醒");

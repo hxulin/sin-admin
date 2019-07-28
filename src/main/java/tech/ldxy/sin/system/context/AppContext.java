@@ -4,9 +4,11 @@ import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import tech.ldxy.sin.system.config.SinConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +27,14 @@ public class AppContext implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext context) throws BeansException {
         applicationContext = context;
+    }
+
+    public static RedisTemplate<String, Object> getRedisTemplate() {
+        return AppContext.getBean("redisTemplate");
+    }
+
+    public static SinConfig getSinConfig() {
+        return AppContext.getBean(SinConfig.class);
     }
 
     /**

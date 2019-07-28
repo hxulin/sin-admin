@@ -4,6 +4,7 @@ package tech.ldxy.sin.system.manager.factory;
 import org.springframework.data.redis.core.RedisTemplate;
 import tech.ldxy.sin.system.config.SinConfig;
 import tech.ldxy.sin.system.context.AppContext;
+import tech.ldxy.sin.system.model.vo.LoginInfo;
 
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -15,17 +16,26 @@ import java.util.concurrent.TimeUnit;
  */
 public class AsyncFactory {
 
-    private static RedisTemplate<String, Object> redisTemplate;
+    private static SinConfig sinConfig = AppContext.getSinConfig();
 
-    private static SinConfig sinConfig;
+    private static RedisTemplate<String, Object> redisTemplate = AppContext.getRedisTemplate();
 
     private AsyncFactory(){
         throw new IllegalStateException("Utility class");
     }
 
-    static {
-        sinConfig = AppContext.getBean(SinConfig.class);
-        redisTemplate = AppContext.getBean("redisTemplate");
+    /**
+     * 记录登录日志
+     */
+    public static TimerTask recordLoginLog(final LoginInfo loginInfo) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                // 根据 IP 查询登录地点
+
+                System.out.println("---> 记录登录日志: " + loginInfo);
+            }
+        };
     }
 
     /**

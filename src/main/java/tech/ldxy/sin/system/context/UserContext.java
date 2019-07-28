@@ -24,9 +24,9 @@ import java.util.concurrent.TimeUnit;
  */
 public final class UserContext {
 
-    private static RedisTemplate<String, Object> redisTemplate;
+    private static SinConfig sinConfig = AppContext.getSinConfig();
 
-    private static SinConfig sinConfig;
+    private static RedisTemplate<String, Object> redisTemplate = AppContext.getRedisTemplate();
 
     private static final String CAPTCHA_PREFIX = "captcha:";
 
@@ -37,12 +37,7 @@ public final class UserContext {
     private static final String RESOURCE_SUFFIX = ":resource";
 
     private UserContext() {
-        throw new IllegalStateException("Utility class");
-    }
 
-    static {
-        sinConfig = AppContext.getBean(SinConfig.class);
-        redisTemplate = AppContext.getBean("redisTemplate");
     }
 
     // 获取缓存中的验证码
@@ -76,6 +71,8 @@ public final class UserContext {
         LoginInfo loginInfo = user.convert(LoginInfo.class);
         loginInfo.setLoginTime(current);
         loginInfo.setLoginIp(loginIp);
+        // 异步记录登录日志
+        AsyncManager.execute(AsyncFactory.recordLoginLog(loginInfo));
         redisTemplate.opsForValue().set(TOKEN_PREFIX + token, loginInfo, sinConfig.getTokenExpireTime(), TimeUnit.MINUTES);
         return token;
     }
@@ -84,8 +81,7 @@ public final class UserContext {
     public static void refreshToken() {
         String token = ContextManager.getAttribute(Constant.TOKEN_KEY);
         if (StringUtils.isNotEmpty(token)) {
-            AsyncManager.me().execute(AsyncFactory.refreshToken(TOKEN_PREFIX + token));
-//            redisTemplate.expire(TOKEN_PREFIX + token, sinConfig.getTokenExpireTime(), TimeUnit.MINUTES);
+            AsyncManager.execute(AsyncFactory.refreshToken(TOKEN_PREFIX + token));
         }
     }
 

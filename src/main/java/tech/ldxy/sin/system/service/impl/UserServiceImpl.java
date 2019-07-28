@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tech.ldxy.sin.core.bean.Const;
 import tech.ldxy.sin.system.context.UserContext;
 import tech.ldxy.sin.system.config.SinConfig;
 import tech.ldxy.sin.system.mapper.UserMapper;
@@ -19,9 +20,6 @@ import tech.ldxy.sin.system.service.IUserService;
 @Service
 @Transactional
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
-
-    @Autowired
-    private SinConfig sinConfig;
 
     @Autowired
     private UserMapper userMapper;
@@ -40,7 +38,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (user == null || !password.equals(user.getPassword())) {
             throw error("用户名或密码错误");
         }
-        if (user.getStatus() == User.LOCK_STATUS) {
+        if (user.getStatus() == Const.Status.DISABLE) {
             throw error("该账号已被锁定，请联系管理员");
         }
         String loginToken = UserContext.login(user);

@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 异步任务管理器
  *
- * @author liuhulu
+ * @author hxulin
  */
 public class AsyncManager {
     /**
@@ -17,19 +17,17 @@ public class AsyncManager {
      */
     private static final int OPERATE_DELAY_TIME = 10;
 
+    private AsyncManager() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * 异步操作任务调度线程池
      */
     private static ScheduledExecutorService executorService;
 
-    /**
-     * 单例模式
-     */
-    private static AsyncManager me = new AsyncManager();
-
-    public static AsyncManager me() {
-        executorService = AppContext.getApplicationContext().getBean("scheduledExecutorService", ScheduledExecutorService.class);
-        return me;
+    static {
+        executorService = AppContext.getBean(ScheduledExecutorService.class);
     }
 
     /**
@@ -37,7 +35,7 @@ public class AsyncManager {
      *
      * @param task 任务
      */
-    public void execute(TimerTask task) {
+    public static void execute(TimerTask task) {
         executorService.schedule(task, OPERATE_DELAY_TIME, TimeUnit.MILLISECONDS);
     }
 }

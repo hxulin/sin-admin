@@ -21,11 +21,7 @@ import java.util.Date;
 @TableName("sys_user")
 public class User extends BaseEntity {
 
-    private static final long serialVersionUID = -280420620597330919L;
-
-    public static final int NORMAL_STATUS = 0;
-
-    public static final int LOCK_STATUS = 1;
+    private static final long serialVersionUID = 3769804553120290868L;
 
     /**
      * 登录名
@@ -43,7 +39,7 @@ public class User extends BaseEntity {
     private String nickname;
 
     /**
-     * 状态
+     * 状态: 0正常, 1禁用
      */
     private int status;
 
@@ -70,10 +66,5 @@ public class User extends BaseEntity {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
-
-    public User(String loginName, String password) {
-        this.loginName = loginName;
-        this.password = password;
-    }
 
 }

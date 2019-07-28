@@ -28,4 +28,12 @@ public interface Const {
 	    String UTF_8 = "UTF-8";
     }
 
+    /**
+     * 状态
+     */
+    interface Status {
+        int NORMAL = 0;
+        int DISABLE = 1;
+    }
+
 }

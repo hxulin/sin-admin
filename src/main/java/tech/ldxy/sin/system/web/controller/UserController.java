@@ -40,7 +40,9 @@ public class UserController {
 
     @GetMapping("/save")
     public ApiResponse save(String loginName, String password) {
-        User user = new User(loginName, password);
+        User user = new User();
+        user.setLoginName(loginName);
+        user.setPassword(password);
         userService.save(user);
         return ApiResponse.successOfMessage("新增用户成功。");
 
