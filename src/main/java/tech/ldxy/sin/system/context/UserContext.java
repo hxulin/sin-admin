@@ -1,14 +1,14 @@
 package tech.ldxy.sin.system.context;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
 import tech.ldxy.sin.core.bean.Status;
 import tech.ldxy.sin.core.util.IpUtils;
 import tech.ldxy.sin.core.util.encryption.AESUtils;
 import tech.ldxy.sin.system.common.Constant;
 import tech.ldxy.sin.system.config.SinConfig;
+import tech.ldxy.sin.system.manager.AsyncManager;
+import tech.ldxy.sin.system.manager.factory.AsyncFactory;
 import tech.ldxy.sin.system.model.entity.User;
 import tech.ldxy.sin.system.model.vo.LoginInfo;
 import tech.ldxy.sin.system.util.SinAssert;
@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
  *
  * @author hxulin
  */
-@Component
 public final class UserContext {
 
     private static RedisTemplate<String, Object> redisTemplate;
@@ -38,17 +37,12 @@ public final class UserContext {
     private static final String RESOURCE_SUFFIX = ":resource";
 
     private UserContext() {
-
+        throw new IllegalStateException("Utility class");
     }
 
-    @Autowired
-    public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
-        UserContext.redisTemplate = redisTemplate;
-    }
-
-    @Autowired
-    public void setSinConfig(SinConfig sinConfig) {
-        UserContext.sinConfig = sinConfig;
+    static {
+        sinConfig = AppContext.getBean(SinConfig.class);
+        redisTemplate = AppContext.getBean("redisTemplate");
     }
 
     // 获取缓存中的验证码
@@ -90,7 +84,8 @@ public final class UserContext {
     public static void refreshToken() {
         String token = ContextManager.getAttribute(Constant.TOKEN_KEY);
         if (StringUtils.isNotEmpty(token)) {
-            redisTemplate.expire(TOKEN_PREFIX + token, sinConfig.getTokenExpireTime(), TimeUnit.MINUTES);
+            AsyncManager.me().execute(AsyncFactory.refreshToken(TOKEN_PREFIX + token));
+//            redisTemplate.expire(TOKEN_PREFIX + token, sinConfig.getTokenExpireTime(), TimeUnit.MINUTES);
         }
     }
 

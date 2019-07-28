@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import tech.ldxy.sin.system.web.filter.TokenFilter;
 
 /**
- * 功能描述:
+ * 功能描述: 过滤器相关配置
  *
  * @author hxulin
  */

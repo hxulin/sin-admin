@@ -58,3 +58,11 @@ mybatis-plus:
   global-config:
     banner: false
   mapper-locations: classpath:mapper/*Mapper.xml
+
+#线程池
+sin:
+  config:
+    thread-pool:
+      keep-alive-seconds: 2000
+      max-pool-size: 100
+      core-pool-size: 10
