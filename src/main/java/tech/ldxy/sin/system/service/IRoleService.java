@@ -12,12 +12,13 @@ import tech.ldxy.sin.system.model.entity.Role;
 public interface IRoleService extends IService<Role>, BusinessExceptionAware {
 
     /**
-     * 保存或更新角色信息
-     *
-     * @param id   角色ID
-     * @param code 角色编码
-     * @param name 角色名称
+     * 新增角色信息
      */
-    void saveOrUpdate(String id, String code, String name);
+    void add(Role role);
+
+    /**
+     * 更新角色信息
+     */
+    void edit(Role role);
 
 }

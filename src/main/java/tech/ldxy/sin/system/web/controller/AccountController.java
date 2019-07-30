@@ -8,8 +8,6 @@ import tech.ldxy.sin.core.bean.Status;
 import tech.ldxy.sin.core.exception.BusinessExceptionAware;
 import tech.ldxy.sin.core.util.Captcha;
 import tech.ldxy.sin.core.util.UUIDUtils;
-import tech.ldxy.sin.system.auth.AuthType;
-import tech.ldxy.sin.system.auth.Resources;
 import tech.ldxy.sin.system.common.Constant;
 import tech.ldxy.sin.system.context.UserContext;
 import tech.ldxy.sin.core.util.IpUtils;
@@ -53,7 +51,7 @@ public class AccountController implements BusinessExceptionAware {
     @ResponseBody
     public ApiResponse login(@RequestParam String loginName, @RequestParam String password,
                              @RequestParam String captcha, @RequestParam String token) {
-        String loginToken = userService.login(loginName, password, captcha, token);
+        String loginToken = userService.login(loginName, UserContext.encryptPwd(password), captcha, token);
         return ApiResponse.successOfData(loginToken);
     }
 

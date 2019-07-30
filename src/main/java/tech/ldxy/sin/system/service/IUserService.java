@@ -22,4 +22,14 @@ public interface IUserService extends IService<User>, BusinessExceptionAware {
      */
     String login(String loginName, String password, String captcha, String token);
 
+    /**
+     * 新增角色信息
+     */
+    void add(User user);
+
+    /**
+     * 更新角色信息
+     */
+    void edit(User user);
+
 }

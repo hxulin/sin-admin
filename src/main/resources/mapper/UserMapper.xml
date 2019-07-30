@@ -11,4 +11,14 @@
         from sys_user
         where login_name = #{loginName}
     </select>
+
+    <select id="loginNameIsExist" resultType="int">
+        select count(id)
+        from sys_user
+        where login_name = #{loginName}
+        <if test="uid != null">
+            and id != #{uid}
+        </if>
+    </select>
+
 </mapper>

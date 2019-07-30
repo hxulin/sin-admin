@@ -20,6 +20,8 @@ public class SinConfig {
 
     private int captchaExpireTime = 10;
 
+    private String loginPasswordSalt = "";
+
     public String getTokenAesKey() {
         return tokenAesKey;
     }
@@ -50,5 +52,13 @@ public class SinConfig {
 
     public void setCaptchaExpireTime(int captchaExpireTime) {
         this.captchaExpireTime = captchaExpireTime;
+    }
+
+    public String getLoginPasswordSalt() {
+        return loginPasswordSalt;
+    }
+
+    public void setLoginPasswordSalt(String loginPasswordSalt) {
+        this.loginPasswordSalt = loginPasswordSalt;
     }
 }

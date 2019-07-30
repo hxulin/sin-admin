@@ -13,6 +13,7 @@ sin:
     token-aes-iv: vd2J9k857YdJG8HI
     token-expire-time: 30
     captcha-expire-time: 10
+    login-password-salt:
   system-admin:
     token: 65day
     iv:

@@ -36,7 +36,7 @@ public class Role extends BaseEntity {
     /**
      * 状态: 0正常, 1禁用
      */
-    private int status;
+    private Integer status;
 
     /**
      * 创建人ID
@@ -61,5 +61,15 @@ public class Role extends BaseEntity {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
+
+    public Role(String code, String name) {
+        this.code = code;
+        this.name = name;
+    }
+
+    public Role(Long id, String code, String name) {
+        this(code, name);
+        this.id = id;
+    }
 
 }

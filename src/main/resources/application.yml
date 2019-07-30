@@ -12,7 +12,7 @@ spring:
       # 监控统计拦截的filters
       filters: stat
       driver-class-name: com.mysql.cj.jdbc.Driver
-      #基本属性
+      # 基本属性
       url: jdbc:mysql:///sin_admin?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
       username: root
       # password: 12345678
@@ -63,6 +63,6 @@ mybatis-plus:
 sin:
   config:
     thread-pool:
-      keep-alive-seconds: 2000
-      max-pool-size: 100
       core-pool-size: 10
+      max-pool-size: 100
+      keep-alive-seconds: 2000

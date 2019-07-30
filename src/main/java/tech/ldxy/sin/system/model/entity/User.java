@@ -41,7 +41,7 @@ public class User extends BaseEntity {
     /**
      * 状态: 0正常, 1禁用
      */
-    private int status;
+    private Integer status;
 
     /**
      * 创建人ID
@@ -67,4 +67,9 @@ public class User extends BaseEntity {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
+    public User(String loginName, String password, String nickname) {
+        this.loginName = loginName;
+        this.password = password;
+        this.nickname = nickname;
+    }
 }

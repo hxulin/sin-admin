@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import tech.ldxy.sin.core.bean.Status;
 import tech.ldxy.sin.core.util.IpUtils;
+import tech.ldxy.sin.core.util.MD5;
 import tech.ldxy.sin.core.util.encryption.AESUtils;
 import tech.ldxy.sin.system.common.Constant;
 import tech.ldxy.sin.system.config.SinConfig;
@@ -81,7 +82,10 @@ public final class UserContext {
     public static void refreshToken() {
         String token = ContextManager.getAttribute(Constant.TOKEN_KEY);
         if (StringUtils.isNotEmpty(token)) {
-            AsyncManager.execute(AsyncFactory.refreshToken(TOKEN_PREFIX + token));
+            // TODO
+            // TODO
+            // TODO
+//            AsyncManager.execute(AsyncFactory.refreshToken(TOKEN_PREFIX + token));
         }
     }
 
@@ -109,5 +113,13 @@ public final class UserContext {
         Long id = getCurrentLoginInfo().getId();
         String resourceKey = USER_PREFIX + id + RESOURCE_SUFFIX;
         return redisTemplate.opsForSet().isMember(resourceKey, requestURI);
+    }
+
+    /**
+     * 加密登录密码
+     */
+    public static String encryptPwd(String password) {
+        String saltPwd = password + sinConfig.getLoginPasswordSalt();
+        return MD5.md5(saltPwd);
     }
 }

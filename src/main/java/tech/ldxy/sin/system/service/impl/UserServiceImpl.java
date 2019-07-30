@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.ldxy.sin.core.bean.Const;
 import tech.ldxy.sin.system.context.UserContext;
-import tech.ldxy.sin.system.config.SinConfig;
 import tech.ldxy.sin.system.mapper.UserMapper;
 import tech.ldxy.sin.system.model.entity.User;
 import tech.ldxy.sin.system.service.IUserService;
@@ -24,6 +23,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Autowired
     private UserMapper userMapper;
 
+    @Override
     public String login(String loginName, String password, String captcha, String token) {
         String dbCaptcha = UserContext.getCaptcha(token);
         if (StringUtils.isBlank(dbCaptcha)) {
@@ -46,6 +46,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             throw error("Token加密错误");
         }
         return loginToken;
+    }
+
+    @Override
+    public void add(User user) {
+        assertLoginNameNotExist(user.getLoginName(), null);
+        this.save(user);
+    }
+
+    @Override
+    public void edit(User user) {
+        assertLoginNameNotExist(user.getLoginName(), user.getId());
+        this.updateById(user);
+    }
+
+    private void assertLoginNameNotExist(String loginName, Long uid) {
+        if (userMapper.loginNameIsExist(loginName, uid) > 0) {
+            throw error("用户名已存在");
+        }
     }
 
 }

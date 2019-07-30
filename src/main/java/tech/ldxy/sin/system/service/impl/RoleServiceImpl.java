@@ -1,13 +1,10 @@
 package tech.ldxy.sin.system.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.ldxy.sin.system.context.UserContext;
 import tech.ldxy.sin.system.mapper.RoleMapper;
-import tech.ldxy.sin.system.mapper.UserMapper;
 import tech.ldxy.sin.system.model.entity.Role;
 import tech.ldxy.sin.system.service.IRoleService;
 
@@ -23,17 +20,22 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     @Autowired
     private RoleMapper roleMapper;
 
-    public void saveOrUpdate(String id, String code, String name) {
-        Role role = new Role();
-        if (StringUtils.isNotEmpty(id)) {
-            role.setId(Long.valueOf(id));
-        }
-        role.setCode(code);
-        role.setName(name);
-        Long uid = UserContext.getCurrentLoginInfo().getId();
-        role.setCreateUid(uid);
-        role.setUpdateUid(uid);
-        this.saveOrUpdate(role);
+    @Override
+    public void add(Role role) {
+        assertRoleCodeNotExist(role.getCode(), null);
+        this.save(role);
+    }
 
+    @Override
+    public void edit(Role role) {
+        assertRoleCodeNotExist(role.getCode(), role.getId());
+        this.updateById(role);
+    }
+
+    // 检查角色编码是否存在
+    private void assertRoleCodeNotExist(String roleCode, Long roleId) {
+        if (roleMapper.roleCodeIsExist(roleCode, roleId) > 0) {
+            throw error("角色编码已存在");
+        }
     }
 }
