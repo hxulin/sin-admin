@@ -1,0 +1,19 @@
+package ${package.Service};
+
+import ${superServiceClassPackage};
+
+import ${package.Entity}.${entity};
+import tech.ldxy.sin.core.exception.BusinessExceptionAware;
+
+/**
+ * 功能描述:
+ *
+ * @author ${author}
+ */
+#if(${kotlin})
+interface ${table.serviceName} : ${superServiceClass}<${entity}>
+#else
+public interface ${table.serviceName} extends ${superServiceClass}<${entity}>, BusinessExceptionAware {
+
+}
+#end

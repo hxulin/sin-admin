@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.ldxy.sin.system.mapper.ResourceMapper">
+
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="tech.ldxy.sin.system.model.entity.Resource">
+        <result column="id" property="id" />
+        <result column="resource_name" property="resourceName" />
+        <result column="mapping" property="mapping" />
+        <result column="auth_type" property="authType" />
+        <result column="perm" property="perm" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+id, resource_name, mapping, auth_type, perm, update_time
+    </sql>
+
+</mapper>

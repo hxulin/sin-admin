@@ -2,12 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="tech.ldxy.sin.system.mapper.UserMapper">
 
-    <sql id="BaseColumn">
-        `id`, `login_name`, `password`, `nickname`, `status`, `create_uid`, `update_uid`, `create_time`, `update_time`
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, login_name, password, nickname, status, create_uid, update_uid, create_time, update_time
     </sql>
     
     <select id="selectByLoginName" resultType="tech.ldxy.sin.system.model.entity.User">
-        select <include refid="BaseColumn"/>
+        select <include refid="Base_Column_List"/>
         from sys_user
         where login_name = #{loginName}
     </select>

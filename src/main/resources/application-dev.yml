@@ -9,10 +9,15 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 sin:
   config:
+    # AES加密Token的密钥: 16位字符
     token-aes-key: 9h15t21ngWZ9287V
+    # AES加密Token的初始向量, 用于加强加密算法的强度: 16位字符
     token-aes-iv: vd2J9k857YdJG8HI
+    # Token的过期时间, 单位: 分钟, 默认30分钟
     token-expire-time: 30
+    # 验证码的过期时间, 单位: 分钟, 默认10分钟
     captcha-expire-time: 10
+    # 登录密码进行MD5混淆加密的盐值
     login-password-salt:
   system-admin:
     token: 65day
