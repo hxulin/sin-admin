@@ -3,8 +3,7 @@ package tech.ldxy.sin.system.manager;
 import tech.ldxy.sin.system.context.AppContext;
 
 import java.util.TimerTask;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * 异步任务管理器
@@ -38,4 +37,12 @@ public class AsyncManager {
     public static void execute(TimerTask task) {
         executorService.schedule(task, OPERATE_DELAY_TIME, TimeUnit.MILLISECONDS);
     }
+
+    /**
+     * 执行异步任务, 要求返回结果
+     */
+    public static <V> Future<V> execute(Callable<V> callable) {
+        return executorService.submit(callable);
+    }
+
 }

@@ -24,14 +24,17 @@ public enum CodeGenerator {
     INSTANCE;
 
     /**
+     * 获取项目根目录
+     */
+    private String getRootPath() {
+        return System.getProperty("user.dir");
+    }
+
+    /**
      * 获取TemplateConfig
      */
     private TemplateConfig getTemplateConfig() {
         return new TemplateConfig().setXml(null);
-    }
-
-    private String getRootPath() {
-        return System.getProperty("user.dir");
     }
 
     /**
@@ -182,8 +185,6 @@ public enum CodeGenerator {
                 .setServiceImpl("service.impl");
     }
 
-
-
     /**
      * 获取AutoGenerator
      */
@@ -211,10 +212,6 @@ public enum CodeGenerator {
         String tableName = scanner.nextLine();
         AutoGenerator mpg = INSTANCE.getAutoGenerator(tableName);
         mpg.execute();
-        if (tableName == null) {
-            System.err.println(" Generate Success !");
-        } else {
-            System.err.println(" TableName【 " + tableName + " 】Generate Success !");
-        }
+        System.err.println(" TableName【 " + tableName + " 】Generate Success !");
     }
 }
