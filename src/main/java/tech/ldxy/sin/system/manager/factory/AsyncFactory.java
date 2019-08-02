@@ -13,7 +13,9 @@ import tech.ldxy.sin.system.auth.AuthType;
 import tech.ldxy.sin.system.auth.Resources;
 import tech.ldxy.sin.system.config.SinConfig;
 import tech.ldxy.sin.system.context.AppContext;
+import tech.ldxy.sin.system.model.entity.Resource;
 import tech.ldxy.sin.system.model.vo.LoginInfo;
+import tech.ldxy.sin.system.service.IResourceService;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -73,7 +75,7 @@ public class AsyncFactory {
             provider.addIncludeFilter(new AnnotationTypeFilter(Controller.class));
             provider.addIncludeFilter(new AnnotationTypeFilter(RestController.class));
             Set<BeanDefinition> beanDefinitionSet = provider.findCandidateComponents(resourceBasePackage);
-            Map<String, AuthType> authInfo = new HashMap<>();
+            Set<Resource> authInfo = new HashSet<>();
             beanDefinitionSet.forEach(item -> {
                 try {
                     Class<?> clazz = Class.forName(item.getBeanClassName());
@@ -96,9 +98,9 @@ public class AsyncFactory {
                             resourceSuffix.forEach(pathSuffix -> {
                                 if (resourcePrefix.size() > 0) {
                                     resourcePrefix.forEach(pathPrefix ->
-                                            authInfo.put(pathPrefix + pathSuffix, authType));
+                                            authInfo.add(buildResource(pathPrefix + pathSuffix, authType)));
                                 } else {
-                                    authInfo.put(pathSuffix, authType);
+                                    authInfo.add(buildResource(pathSuffix, authType));
                                 }
                             });
                         }
@@ -107,10 +109,22 @@ public class AsyncFactory {
                     e.printStackTrace();
                 }
             });
-            System.out.println(authInfo);
-//            return ApiResponse.success();
-            return null;
+            IResourceService resourceService = AppContext.getBean(IResourceService.class);
+            List<Resource> resourceList = resourceService.list();
+            authInfo.removeAll(resourceList);
+            resourceService.saveBatch(authInfo);
+            return true;
         };
+    }
+
+    /**
+     * 构建 Resource 资源对象
+     */
+    private static Resource buildResource(String path, AuthType authType) {
+        Resource resource = new Resource();
+        resource.setMapping(path);
+        resource.setAuthType(authType.getValue());
+        return resource;
     }
 
     /**

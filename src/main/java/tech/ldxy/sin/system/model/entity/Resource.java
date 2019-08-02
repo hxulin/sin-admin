@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import tech.ldxy.sin.core.model.entity.BaseEntity;
 
@@ -17,11 +16,10 @@ import java.util.Date;
  */
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @TableName("sys_resource")
 public class Resource extends BaseEntity {
 
-    private static final long serialVersionUID = -7729541686487678773L;
+    private static final long serialVersionUID = 8712918321011609345L;
 
     /**
      * 资源名称
@@ -48,5 +46,22 @@ public class Resource extends BaseEntity {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Resource other = (Resource) obj;
+        return mapping == null ? other.mapping == null : mapping.equals(other.mapping);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 + (mapping == null ? 0 : mapping.hashCode());
+    }
 
 }

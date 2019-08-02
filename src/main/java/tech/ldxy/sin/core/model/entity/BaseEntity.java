@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import tech.ldxy.sin.core.model.Convert;
 
-import java.util.Objects;
-
 /**
  * 功能描述:
  *
@@ -21,15 +19,20 @@ public class BaseEntity extends Convert {
     protected Long id;
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BaseEntity that = (BaseEntity) o;
-        return Objects.equals(id, that.id);
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        BaseEntity other = (BaseEntity) obj;
+        return id == null ? other.id == null : id.equals(other.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return 31 + (id == null ? 0 : id.hashCode());
     }
+
 }

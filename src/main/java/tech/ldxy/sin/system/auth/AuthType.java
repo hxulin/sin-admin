@@ -26,6 +26,9 @@ public enum AuthType {
         this.value = value;
     }
 
+    public int getValue() {
+        return value;
+    }
 
     public static AuthType getEnum(int value) {
         for (AuthType authType : AuthType.values()) {
