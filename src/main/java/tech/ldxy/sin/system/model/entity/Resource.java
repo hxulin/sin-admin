@@ -19,12 +19,12 @@ import java.util.Date;
 @TableName("sys_resource")
 public class Resource extends BaseEntity {
 
-    private static final long serialVersionUID = 8712918321011609345L;
+    private static final long serialVersionUID = 5932796021874405080L;
 
     /**
      * 资源名称
      */
-    private String resourceName;
+    private String name;
 
     /**
      * 映射路径
@@ -35,11 +35,6 @@ public class Resource extends BaseEntity {
      * 权限认证类型
      */
     private Integer authType;
-
-    /**
-     * 权限标识
-     */
-    private String perm;
 
     /**
      * 修改时间

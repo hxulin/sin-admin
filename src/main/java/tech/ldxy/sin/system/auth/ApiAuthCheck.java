@@ -60,7 +60,7 @@ public class ApiAuthCheck implements BusinessExceptionAware {
     }
 
     private void checkPermission(Resources resources) {
-        switch (resources.value()) {
+        switch (resources.auth()) {
             case LOGIN:
                 // 检查用户是否登录
                 UserContext.getCurrentLoginInfo();

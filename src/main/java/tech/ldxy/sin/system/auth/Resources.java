@@ -13,5 +13,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Resources {
-    AuthType value() default AuthType.OPEN;
+    AuthType auth() default AuthType.OPEN;
+    String name() default "";
 }

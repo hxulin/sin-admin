@@ -43,6 +43,7 @@ public class UserController implements BusinessExceptionAware {
      * 修改用户
      */
     @PostMapping("/edit")
+    @Resources(name = "修改用户信息", auth = AuthType.AUTH)
     public ApiResponse save(String loginName, String password) {
         /*User user = new User();
         user.setLoginName(loginName);
@@ -53,11 +54,10 @@ public class UserController implements BusinessExceptionAware {
     }
 
     @GetMapping("/info")
-    @Resources(AuthType.LOGIN)
+    @Resources(name = "获取用户信息", auth = AuthType.LOGIN)
     public ApiResponse info() {
 
 //        LoginInfo loginInfo = UserContext.getCurrentLoginInfo();
-
 
         return ApiResponse.successOfMessage("获取用户信息。");
 

@@ -67,7 +67,7 @@ public class AsyncFactory {
     /**
      * 加载资源
      */
-    public static Callable<Object> loadResource() {
+    public static Callable<Boolean> loadResource() {
         return () -> {
             String resourceBasePackage = "tech.ldxy.sin.system.web.controller";
             ClassPathScanningCandidateComponentProvider provider =
@@ -80,7 +80,7 @@ public class AsyncFactory {
                 try {
                     Class<?> clazz = Class.forName(item.getBeanClassName());
                     Resources resources = clazz.getAnnotation(Resources.class);
-                    AuthType classAuthType = resources != null ? resources.value() : AuthType.OPEN;
+                    AuthType classAuthType = resources != null ? resources.auth() : AuthType.OPEN;
                     RequestMapping mapping = clazz.getAnnotation(RequestMapping.class);
                     Set<String> resourcePrefix = handleMappingUri(mapping);
                     Method[] methods = clazz.getDeclaredMethods();
@@ -90,7 +90,8 @@ public class AsyncFactory {
                         PostMapping postMapping = method.getAnnotation(PostMapping.class);
                         if (requestMapping != null || getMapping != null || postMapping != null) {
                             Resources methodResources = method.getAnnotation(Resources.class);
-                            AuthType authType = methodResources != null ? methodResources.value() : classAuthType;
+                            AuthType authType = methodResources != null ? methodResources.auth() : classAuthType;
+                            String resourceName = methodResources != null ? methodResources.name() : null;
                             Set<String> resourceSuffix = new HashSet<>();
                             resourceSuffix.addAll(handleMappingUri(requestMapping));
                             resourceSuffix.addAll(handleMappingUri(getMapping));
@@ -98,9 +99,9 @@ public class AsyncFactory {
                             resourceSuffix.forEach(pathSuffix -> {
                                 if (resourcePrefix.size() > 0) {
                                     resourcePrefix.forEach(pathPrefix ->
-                                            authInfo.add(buildResource(pathPrefix + pathSuffix, authType)));
+                                            authInfo.add(buildResource(resourceName, pathPrefix + pathSuffix, authType)));
                                 } else {
-                                    authInfo.add(buildResource(pathSuffix, authType));
+                                    authInfo.add(buildResource(resourceName, pathSuffix, authType));
                                 }
                             });
                         }
@@ -120,8 +121,11 @@ public class AsyncFactory {
     /**
      * 构建 Resource 资源对象
      */
-    private static Resource buildResource(String path, AuthType authType) {
+    private static Resource buildResource(String resourceName, String path, AuthType authType) {
         Resource resource = new Resource();
+        if (resourceName != null) {
+            resource.setName(resourceName);
+        }
         resource.setMapping(path);
         resource.setAuthType(authType.getValue());
         return resource;
