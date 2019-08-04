@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import tech.ldxy.sin.core.exception.BusinessExceptionAware;
 import tech.ldxy.sin.system.model.entity.User;
 
+import java.util.List;
+
 /**
  * 功能描述:
  *
@@ -31,5 +33,13 @@ public interface IUserService extends IService<User>, BusinessExceptionAware {
      * 更新角色信息
      */
     void edit(User user);
+
+    /**
+     * 保存用户角色信息
+     *
+     * @param uid     用户ID
+     * @param roleIds 角色ID
+     */
+    void saveUserRoles(Long uid, List<Long> roleIds);
 
 }

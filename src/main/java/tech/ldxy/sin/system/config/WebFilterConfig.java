@@ -3,6 +3,7 @@ package tech.ldxy.sin.system.config;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tech.ldxy.sin.core.web.filter.XssFilter;
 import tech.ldxy.sin.system.web.filter.TokenFilter;
 
 /**
@@ -14,14 +15,27 @@ import tech.ldxy.sin.system.web.filter.TokenFilter;
 public class WebFilterConfig {
 
     /**
-     * 注册 Token Filter
+     * 注册 Xss Filter
      */
     @Bean
-    public FilterRegistrationBean<TokenFilter> xssFilterFilterRegistrationBean() {
-        TokenFilter tokenFilter = new TokenFilter();
-        FilterRegistrationBean<TokenFilter> registration = new FilterRegistrationBean<>(tokenFilter);
+    public FilterRegistrationBean<XssFilter> xssFilterFilterRegistrationBean() {
+        XssFilter xssFilter = new XssFilter();
+        FilterRegistrationBean<XssFilter> registration = new FilterRegistrationBean<>(xssFilter);
         registration.addUrlPatterns("/*");
         registration.setOrder(1);
         return registration;
     }
+
+    /**
+     * 注册 Token Filter
+     */
+    @Bean
+    public FilterRegistrationBean<TokenFilter> tokenFilterFilterRegistrationBean() {
+        TokenFilter tokenFilter = new TokenFilter();
+        FilterRegistrationBean<TokenFilter> registration = new FilterRegistrationBean<>(tokenFilter);
+        registration.addUrlPatterns("/*");
+        registration.setOrder(2);
+        return registration;
+    }
+
 }

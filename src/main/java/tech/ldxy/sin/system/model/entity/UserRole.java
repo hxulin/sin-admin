@@ -17,7 +17,12 @@ import tech.ldxy.sin.core.model.entity.BaseEntity;
 @TableName("sys_user_role")
 public class UserRole extends BaseEntity {
 
-    private static final long serialVersionUID = -3740128032389149805L;
+    private static final long serialVersionUID = 4912405976605965468L;
+
+    public UserRole(Long uid, Long roleId) {
+        this.uid = uid;
+        this.roleId = roleId;
+    }
 
     /**
      * 用户编号

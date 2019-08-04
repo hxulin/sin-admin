@@ -1,5 +1,7 @@
 package tech.ldxy.sin.system.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.ldxy.sin.core.bean.Const;
 import tech.ldxy.sin.system.context.UserContext;
 import tech.ldxy.sin.system.mapper.UserMapper;
+import tech.ldxy.sin.system.mapper.UserRoleMapper;
 import tech.ldxy.sin.system.model.entity.User;
+import tech.ldxy.sin.system.model.entity.UserRole;
+import tech.ldxy.sin.system.service.IUserRoleService;
 import tech.ldxy.sin.system.service.IUserService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 功能描述:
@@ -22,6 +30,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+
+    @Autowired
+    private IUserRoleService userRoleService;
 
     @Override
     public String login(String loginName, String password, String captcha, String token) {
@@ -45,6 +59,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (loginToken == null) {
             throw error("Token加密错误");
         }
+        // 查询用户的权限信息放到缓存中
+
+
         return loginToken;
     }
 
@@ -58,6 +75,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public void edit(User user) {
         assertLoginNameNotExist(user.getLoginName(), user.getId());
         this.updateById(user);
+    }
+
+    @Override
+    public void saveUserRoles(Long uid, List<Long> roleIds) {
+        if (CollectionUtils.isNotEmpty(roleIds)) {
+            userRoleMapper.delete(Wrappers.query(new UserRole()).eq("uid", uid));
+            userRoleService.saveBatch(roleIds.stream().map(e -> new UserRole(uid, e)).collect(Collectors.toList()));
+        }
     }
 
     private void assertLoginNameNotExist(String loginName, Long uid) {
