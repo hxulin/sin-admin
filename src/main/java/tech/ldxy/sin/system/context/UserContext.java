@@ -16,6 +16,7 @@ import tech.ldxy.sin.system.util.SinAssert;
 import tech.ldxy.sin.system.web.filter.ContextManager;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -41,22 +42,30 @@ public final class UserContext {
 
     }
 
-    // 获取缓存中的验证码
+    /**
+     * 获取缓存中的验证码
+     */
     public static String getCaptcha(String key) {
         return (String) redisTemplate.opsForValue().get(CAPTCHA_PREFIX + key);
     }
 
-    // 保存登录页面的验证码到缓存中
+    /**
+     * 保存登录页面的验证码到缓存中
+     */
     public static void setCaptcha(String key, String captcha) {
         redisTemplate.opsForValue().set(CAPTCHA_PREFIX + key, captcha, sinConfig.getCaptchaExpireTime(), TimeUnit.MINUTES);
     }
 
-    // 从缓存中删除验证码信息
+    /**
+     * 从缓存中删除验证码信息
+     */
     public static void removeCaptcha(String key) {
         redisTemplate.delete(CAPTCHA_PREFIX + key);
     }
 
-    // 用户登录，将用户的登录信息保存到缓存中
+    /**
+     * 用户登录，将用户的登录信息保存到缓存中
+     */
     public static String login(User user) {
         Date current = new Date();
         String loginIp = IpUtils.getIpAddr(AppContext.getRequest());
@@ -78,18 +87,23 @@ public final class UserContext {
         return token;
     }
 
-    // 刷新 Token 的过期时间
+    /**
+     * 刷新 Token 的过期时间
+     */
     public static void refreshToken() {
         String token = ContextManager.getAttribute(Constant.TOKEN_KEY);
         if (StringUtils.isNotEmpty(token)) {
             // TODO
             // TODO
             // TODO
+            System.err.println("-------> refresh token");
 //            AsyncManager.execute(AsyncFactory.refreshToken(TOKEN_PREFIX + token));
         }
     }
 
-    // 获取当前登录信息
+    /**
+     * 获取当前用户的登录信息
+     */
     public static LoginInfo getCurrentLoginInfo() {
         Object token = ContextManager.getAttribute(Constant.TOKEN_KEY);
         SinAssert.INSTANCE.assertNotNull(token, Status.NOT_LOGIN);
@@ -98,7 +112,16 @@ public final class UserContext {
         return (LoginInfo) loginInfo;
     }
 
-    // 用户注销登录
+    /**
+     * 获取当前登录用户的ID
+     */
+    public static Long getCurrentUid() {
+        return getCurrentLoginInfo().getId();
+    }
+
+    /**
+     * 用户注销登录
+     */
     public static void logout() {
         String token = ContextManager.getAttribute(Constant.TOKEN_KEY);
         if (StringUtils.isNotEmpty(token)) {
@@ -107,11 +130,18 @@ public final class UserContext {
     }
 
     /**
+     * 将用户可访问资源的权限信息保存到缓存中
+     */
+    public static void cachePermissionList(Long uid, List<String> resourceMapping) {
+        String resourceKey = USER_PREFIX + uid + RESOURCE_SUFFIX;
+        redisTemplate.opsForSet().add(resourceKey, resourceMapping.toArray(new String[0]));
+    }
+
+    /**
      * 检查当前用户是否具有访问该资源的权限
      */
     public static boolean hasPermission(String requestURI) {
-        Long id = getCurrentLoginInfo().getId();
-        String resourceKey = USER_PREFIX + id + RESOURCE_SUFFIX;
+        String resourceKey = USER_PREFIX + getCurrentUid() + RESOURCE_SUFFIX;
         return redisTemplate.opsForSet().isMember(resourceKey, requestURI);
     }
 

@@ -53,7 +53,7 @@ public class CommonMetaObjectHandler implements MetaObjectHandler {
     private Long currentUid() {
         Long uid = null;
         try {
-            uid = UserContext.getCurrentLoginInfo().getId();
+            uid = UserContext.getCurrentUid();
         } catch (Exception ignored) {
         }
         return uid;

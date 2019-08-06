@@ -1,84 +1,19 @@
 package tech.ldxy.sin.core.web.filter;
 
-import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.util.HtmlUtils;
 
-import javax.servlet.ReadListener;
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
- * 功能描述: Request 请求包装类
+ * 功能描述: Request 请求包装类, 预防 XSS 攻击
  *
- * 1、预防 XSS 攻击
- * 2、拓展 RequestBody 无限获取(HttpServletRequestWrapper只能获取一次)
- *
- * @author Caratacus
+ * @author hxulin
  */
 public class RequestWrapper extends HttpServletRequestWrapper {
 
-    /**
-     * 存储 requestBody byte[]
-     */
-    private final byte[] body;
-
     RequestWrapper(HttpServletRequest request) {
         super(request);
-        this.body = getByteBody(request);
-    }
-
-    private byte[] getByteBody(HttpServletRequest request) {
-        byte[] body = new byte[0];
-        try {
-            body = StreamUtils.copyToByteArray(request.getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return body;
-    }
-
-    @Override
-    public BufferedReader getReader() {
-        return ObjectUtils.isEmpty(body) ? null : new BufferedReader(new InputStreamReader(getInputStream()));
-    }
-
-    @Override
-    public ServletInputStream getInputStream() {
-        final ByteArrayInputStream is = new ByteArrayInputStream(body);
-        return getServletInputStream(is);
-    }
-
-    /**
-     * 获取ServletInputStream
-     */
-    private ServletInputStream getServletInputStream(ByteArrayInputStream is) {
-        return new ServletInputStream() {
-
-            @Override
-            public boolean isFinished() {
-                return false;
-            }
-
-            @Override
-            public boolean isReady() {
-                return false;
-            }
-
-            @Override
-            public void setReadListener(ReadListener readListener) {
-            }
-
-            @Override
-            public int read() {
-                return is.read();
-            }
-        };
     }
 
     @Override
@@ -102,15 +37,6 @@ public class RequestWrapper extends HttpServletRequestWrapper {
             return null;
         }
         return htmlEscape(value);
-    }
-
-    @Override
-    public Object getAttribute(String name) {
-        Object value = super.getAttribute(name);
-        if (value instanceof String) {
-            htmlEscape((String) value);
-        }
-        return value;
     }
 
     @Override

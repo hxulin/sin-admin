@@ -73,11 +73,11 @@ public enum CodeGenerator {
     private GlobalConfig getGlobalConfig() {
         return new GlobalConfig()
                 .setOutputDir(getJavaPath())// 输出目录
-                .setFileOverride(true)// 是否覆盖文件
+                .setFileOverride(false)// 是否覆盖文件
                 .setActiveRecord(false)// 开启 activeRecord 模式
                 .setEnableCache(false)// XML 二级缓存
-                .setBaseResultMap(true)// XML ResultMap
-                .setBaseColumnList(true)// XML ColumnList
+                .setBaseResultMap(false)// XML ResultMap
+                .setBaseColumnList(false)// XML ColumnList
                 .setKotlin(false)// 是否生成 kotlin 代码
                 .setOpen(false)
                 .setAuthor("hxulin")// 作者

@@ -8,6 +8,8 @@ import tech.ldxy.sin.core.bean.Status;
 import tech.ldxy.sin.core.exception.BusinessExceptionAware;
 import tech.ldxy.sin.core.util.Captcha;
 import tech.ldxy.sin.core.util.UUIDUtils;
+import tech.ldxy.sin.system.auth.AuthType;
+import tech.ldxy.sin.system.auth.Resources;
 import tech.ldxy.sin.system.common.Constant;
 import tech.ldxy.sin.system.context.UserContext;
 import tech.ldxy.sin.core.util.IpUtils;
@@ -70,6 +72,7 @@ public class AccountController implements BusinessExceptionAware {
 
     @GetMapping("/ip")
     @ResponseBody
+    @Resources(auth = AuthType.AUTH)
     public ApiResponse clientIp(HttpServletRequest request) {
         return ApiResponse.successOfData(IpUtils.getIpAddr(request));
     }
@@ -89,6 +92,7 @@ public class AccountController implements BusinessExceptionAware {
 
     @GetMapping("/test2")
     @ResponseBody
+    @Resources(auth = AuthType.AUTH)
     public ApiResponse test() {
         throw error(Status.NOT_LOGIN);
 //        return ApiResponse.success();

@@ -1,5 +1,6 @@
 package tech.ldxy.sin.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -11,12 +12,17 @@ import tech.ldxy.sin.core.bean.Const;
 import tech.ldxy.sin.system.context.UserContext;
 import tech.ldxy.sin.system.mapper.UserMapper;
 import tech.ldxy.sin.system.mapper.UserRoleMapper;
+import tech.ldxy.sin.system.model.entity.Resource;
+import tech.ldxy.sin.system.model.entity.RoleResource;
 import tech.ldxy.sin.system.model.entity.User;
 import tech.ldxy.sin.system.model.entity.UserRole;
+import tech.ldxy.sin.system.service.IResourceService;
+import tech.ldxy.sin.system.service.IRoleResourceService;
 import tech.ldxy.sin.system.service.IUserRoleService;
 import tech.ldxy.sin.system.service.IUserService;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -36,6 +42,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Autowired
     private IUserRoleService userRoleService;
+
+    @Autowired
+    private IRoleResourceService roleResourceService;
+
+    @Autowired
+    private IResourceService resourceService;
 
     @Override
     public String login(String loginName, String password, String captcha, String token) {
@@ -60,8 +72,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             throw error("Token加密错误");
         }
         // 查询用户的权限信息放到缓存中
-
-
+        List<UserRole> list = userRoleService.list(
+                new QueryWrapper<UserRole>().eq("uid", user.getId()));
+        List<Long> roleIds = list.stream().map(UserRole::getRoleId).collect(Collectors.toList());
+        List<RoleResource> roleResourceList = roleResourceService.list(
+                new QueryWrapper<RoleResource>().in("role_id", roleIds));
+        Set<Long> resourceId = roleResourceList.stream().map(RoleResource::getResourceId).collect(Collectors.toSet());
+        List<String> resourceMapping = resourceService.list(new QueryWrapper<Resource>().in("id", resourceId))
+                .stream().map(Resource::getMapping).collect(Collectors.toList());
+        // 缓存用户可访问的资源权限信息
+        UserContext.cachePermissionList(user.getId(), resourceMapping);
         return loginToken;
     }
 
