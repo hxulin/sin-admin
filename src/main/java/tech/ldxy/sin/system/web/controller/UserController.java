@@ -9,10 +9,15 @@ import tech.ldxy.sin.core.exception.BusinessExceptionAware;
 import tech.ldxy.sin.system.auth.AuthType;
 import tech.ldxy.sin.system.auth.Resources;
 import tech.ldxy.sin.system.context.UserContext;
+import tech.ldxy.sin.system.model.entity.Menu;
 import tech.ldxy.sin.system.model.entity.User;
+import tech.ldxy.sin.system.model.vo.LoginInfo;
 import tech.ldxy.sin.system.service.IUserService;
 
 import javax.validation.constraints.Pattern;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 功能描述:
@@ -56,10 +61,12 @@ public class UserController implements BusinessExceptionAware {
     @GetMapping("/info")
     @Resources(name = "获取用户信息", auth = AuthType.LOGIN)
     public ApiResponse info() {
-
-//        LoginInfo loginInfo = UserContext.getCurrentLoginInfo();
-
-        return ApiResponse.successOfMessage("获取用户信息。");
+        Map<String, Object> result = new HashMap<>();
+        LoginInfo loginInfo = UserContext.getCurrentLoginInfo();
+        List<Menu> menuList = UserContext.getCurrentMenuList();
+        result.put("loginInfo", loginInfo);
+        result.put("menuList", menuList);
+        return ApiResponse.successOfData(result);
 
     }
 

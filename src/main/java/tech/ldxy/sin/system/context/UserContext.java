@@ -10,6 +10,7 @@ import tech.ldxy.sin.system.common.Constant;
 import tech.ldxy.sin.system.config.SinConfig;
 import tech.ldxy.sin.system.manager.AsyncManager;
 import tech.ldxy.sin.system.manager.factory.AsyncFactory;
+import tech.ldxy.sin.system.model.entity.Menu;
 import tech.ldxy.sin.system.model.entity.User;
 import tech.ldxy.sin.system.model.vo.LoginInfo;
 import tech.ldxy.sin.system.util.SinAssert;
@@ -37,6 +38,8 @@ public final class UserContext {
     private static final String USER_PREFIX = "user:";
 
     private static final String RESOURCE_SUFFIX = ":resource";
+
+    private static final String MENU_SUFFIX = ":menu";
 
     private UserContext() {
 
@@ -130,7 +133,7 @@ public final class UserContext {
     }
 
     /**
-     * 将用户可访问资源的权限信息保存到缓存中
+     * 将用户的权限列表信息保存到缓存中
      */
     public static void cachePermissionList(Long uid, List<String> resourceMapping) {
         String resourceKey = USER_PREFIX + uid + RESOURCE_SUFFIX;
@@ -143,6 +146,23 @@ public final class UserContext {
     public static boolean hasPermission(String requestURI) {
         String resourceKey = USER_PREFIX + getCurrentUid() + RESOURCE_SUFFIX;
         return redisTemplate.opsForSet().isMember(resourceKey, requestURI);
+    }
+
+    /**
+     * 将用户的菜单列表信息保存到缓存中
+     */
+    public static void cacheMenuList(Long uid, List<Menu> menuList) {
+        String menuKey = USER_PREFIX + uid + MENU_SUFFIX;
+        redisTemplate.opsForValue().set(menuKey, menuList);
+    }
+
+    /**
+     * 获取当前登录用户的菜单列表信息
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Menu> getCurrentMenuList() {
+        String menuKey = USER_PREFIX + getCurrentUid() + MENU_SUFFIX;
+        return (List<Menu>) redisTemplate.opsForValue().get(menuKey);
     }
 
     /**

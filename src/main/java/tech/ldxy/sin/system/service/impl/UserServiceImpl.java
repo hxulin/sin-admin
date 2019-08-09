@@ -12,15 +12,10 @@ import tech.ldxy.sin.core.bean.Const;
 import tech.ldxy.sin.system.context.UserContext;
 import tech.ldxy.sin.system.mapper.UserMapper;
 import tech.ldxy.sin.system.mapper.UserRoleMapper;
-import tech.ldxy.sin.system.model.entity.Resource;
-import tech.ldxy.sin.system.model.entity.RoleResource;
-import tech.ldxy.sin.system.model.entity.User;
-import tech.ldxy.sin.system.model.entity.UserRole;
-import tech.ldxy.sin.system.service.IResourceService;
-import tech.ldxy.sin.system.service.IRoleResourceService;
-import tech.ldxy.sin.system.service.IUserRoleService;
-import tech.ldxy.sin.system.service.IUserService;
+import tech.ldxy.sin.system.model.entity.*;
+import tech.ldxy.sin.system.service.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -49,6 +44,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Autowired
     private IResourceService resourceService;
 
+    @Autowired
+    private IRoleMenuService roleMenuService;
+
+    @Autowired
+    private IMenuService menuService;
+
     @Override
     public String login(String loginName, String password, String captcha, String token) {
         String dbCaptcha = UserContext.getCaptcha(token);
@@ -71,7 +72,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (loginToken == null) {
             throw error("Token加密错误");
         }
-        // 查询用户的权限信息放到缓存中
+        // 查询用户的接口权限信息
         List<UserRole> list = userRoleService.list(
                 new QueryWrapper<UserRole>().eq("uid", user.getId()));
         List<Long> roleIds = list.stream().map(UserRole::getRoleId).collect(Collectors.toList());
@@ -80,8 +81,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         Set<Long> resourceId = roleResourceList.stream().map(RoleResource::getResourceId).collect(Collectors.toSet());
         List<String> resourceMapping = resourceService.list(new QueryWrapper<Resource>().in("id", resourceId))
                 .stream().map(Resource::getMapping).collect(Collectors.toList());
-        // 缓存用户可访问的资源权限信息
+        // 缓存用户的接口权限信息列表
         UserContext.cachePermissionList(user.getId(), resourceMapping);
+
+        // 查询用户的菜单权限信息
+        List<RoleMenu> roleMenuList = roleMenuService.list(
+                new QueryWrapper<RoleMenu>().in("role_id", roleIds));
+        Set<Long> menuIds = roleMenuList.stream().map(RoleMenu::getMenuId).collect(Collectors.toSet());
+        List<Menu> menuList = menuIds.size() > 0
+                ? menuService.list(new QueryWrapper<Menu>().in("id", menuIds))
+                : Collections.EMPTY_LIST;
+        // 缓存用户的菜单权限信息列表
+        UserContext.cacheMenuList(user.getId(), menuList);
         return loginToken;
     }
 

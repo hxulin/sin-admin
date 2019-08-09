@@ -56,7 +56,7 @@ public class Menu extends BaseEntity {
     /**
      * 排序
      */
-    private String sort;
+    private Long sort;
 
     /**
      * 创建人ID
@@ -82,4 +82,13 @@ public class Menu extends BaseEntity {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
+    public Menu(long parentId, String menuName, String path, Integer menuType, String icon, String btnClass, Long sort) {
+        this.parentId = parentId;
+        this.menuName = menuName;
+        this.path = path;
+        this.menuType = menuType;
+        this.icon = icon;
+        this.btnClass = btnClass;
+        this.sort = sort;
+    }
 }
