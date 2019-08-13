@@ -92,7 +92,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 ? menuService.list(new QueryWrapper<Menu>().in("id", menuIds))
                 : Collections.EMPTY_LIST;
         // 缓存用户的菜单权限信息列表
-        UserContext.cacheMenuList(user.getId(), menuList);
+        UserContext.cacheMenuList(user.getId(), menuList.stream().map(Menu::getPath).collect(Collectors.toList()));
         return loginToken;
     }
 

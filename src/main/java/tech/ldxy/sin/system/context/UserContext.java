@@ -151,7 +151,7 @@ public final class UserContext {
     /**
      * 将用户的菜单列表信息保存到缓存中
      */
-    public static void cacheMenuList(Long uid, List<Menu> menuList) {
+    public static void cacheMenuList(Long uid, List<String> menuList) {
         String menuKey = USER_PREFIX + uid + MENU_SUFFIX;
         redisTemplate.opsForValue().set(menuKey, menuList);
     }
@@ -160,9 +160,9 @@ public final class UserContext {
      * 获取当前登录用户的菜单列表信息
      */
     @SuppressWarnings("unchecked")
-    public static List<Menu> getCurrentMenuList() {
+    public static List<String> getCurrentMenuList() {
         String menuKey = USER_PREFIX + getCurrentUid() + MENU_SUFFIX;
-        return (List<Menu>) redisTemplate.opsForValue().get(menuKey);
+        return (List<String>) redisTemplate.opsForValue().get(menuKey);
     }
 
     /**

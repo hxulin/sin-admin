@@ -18,6 +18,7 @@ import javax.validation.constraints.Pattern;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 功能描述:
@@ -63,7 +64,7 @@ public class UserController implements BusinessExceptionAware {
     public ApiResponse info() {
         Map<String, Object> result = new HashMap<>();
         LoginInfo loginInfo = UserContext.getCurrentLoginInfo();
-        List<Menu> menuList = UserContext.getCurrentMenuList();
+        List<String> menuList = UserContext.getCurrentMenuList();
         result.put("loginInfo", loginInfo);
         result.put("menuList", menuList);
         return ApiResponse.successOfData(result);
