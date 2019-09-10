@@ -2,6 +2,19 @@
 spring:
   profiles:
     active: dev
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+      FAIL_ON_EMPTY_BEANS: false
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+    default-property-inclusion: non_null
+    mapper:
+      PROPAGATE_TRANSIENT_MARKER: true
+    parser:
+      ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER: true
   mvc:
     favicon:
       enabled: false
@@ -26,7 +39,7 @@ spring:
       time-between-eviction-runs-millis: 60000
       # 一个连接在池中最小生存的时间
       min-evictable-idle-time-millis: 300000
-      validation-query: SELECT 'x'
+      validation-query: SELECT 1
       test-while-idle: true
       test-on-borrow: false
       test-on-return: false

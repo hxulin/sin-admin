@@ -39,7 +39,7 @@ public class Menu extends BaseEntity {
     private String path;
 
     /**
-     * 菜单类型
+     * 菜单类型: 1目录, 2菜单, 3按钮
      */
     private Integer menuType;
 

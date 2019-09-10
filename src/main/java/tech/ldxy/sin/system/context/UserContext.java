@@ -10,7 +10,6 @@ import tech.ldxy.sin.system.common.Constant;
 import tech.ldxy.sin.system.config.SinConfig;
 import tech.ldxy.sin.system.manager.AsyncManager;
 import tech.ldxy.sin.system.manager.factory.AsyncFactory;
-import tech.ldxy.sin.system.model.entity.Menu;
 import tech.ldxy.sin.system.model.entity.User;
 import tech.ldxy.sin.system.model.vo.LoginInfo;
 import tech.ldxy.sin.system.util.SinAssert;

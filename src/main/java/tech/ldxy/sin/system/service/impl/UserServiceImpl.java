@@ -88,11 +88,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         List<RoleMenu> roleMenuList = roleMenuService.list(
                 new QueryWrapper<RoleMenu>().in("role_id", roleIds));
         Set<Long> menuIds = roleMenuList.stream().map(RoleMenu::getMenuId).collect(Collectors.toSet());
-        List<Menu> menuList = menuIds.size() > 0
-                ? menuService.list(new QueryWrapper<Menu>().in("id", menuIds))
+        List<String> menuList = menuIds.size() > 0
+                ? menuService.list(new QueryWrapper<Menu>().in("id", menuIds)).stream().map(Menu::getPath).collect(Collectors.toList())
                 : Collections.EMPTY_LIST;
         // 缓存用户的菜单权限信息列表
-        UserContext.cacheMenuList(user.getId(), menuList.stream().map(Menu::getPath).collect(Collectors.toList()));
+        UserContext.cacheMenuList(user.getId(), menuList);
         return loginToken;
     }
 

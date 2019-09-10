@@ -32,15 +32,8 @@ public class AppErrorController implements ErrorController {
     // @ResponseStatus(HttpStatus.OK)
     public ApiResponse errorApiHandler(HttpServletRequest request, HttpServletResponse response) {
         Integer status = (Integer) request.getAttribute("javax.servlet.error.status_code");
-        if (status != null) {
-            switch (status) {
-                case 400:
-                    return ApiResponse.notValidParam();
-                case 404:
-                    return ApiResponse.notFound();
-                case 405:
-                    return ApiResponse.create(status, Status.METHOD_NOT_ALLOWED.getMsg());
-            }
+        if (status == 400 || status == 404 || status == 405) {
+            return ApiResponse.create(Status.getByCode(status));
         }
         Throwable throwable = (Throwable) request.getAttribute("javax.servlet.error.exception");
         if (throwable != null) {
@@ -65,7 +58,7 @@ public class AppErrorController implements ErrorController {
             } else if (throwable instanceof ConstraintViolationException) {
                 // 请求参数校验异常
                 response.setStatus(Status.NOT_VALID_PARAM.getCode());
-                return ApiResponse.notValidParam();
+                return ApiResponse.create(Status.NOT_VALID_PARAM);
             } else {
                 // 未知类型异常, 记录严重性日志, 发送邮件提醒
                 System.err.println("未知类型异常, 记录日志, 发送邮件提醒");

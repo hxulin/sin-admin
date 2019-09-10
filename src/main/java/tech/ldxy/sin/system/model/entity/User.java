@@ -21,7 +21,7 @@ import java.util.Date;
 @TableName("sys_user")
 public class User extends BaseEntity {
 
-    private static final long serialVersionUID = 3769804553120290868L;
+    private static final long serialVersionUID = -713774115493995838L;
 
     /**
      * 登录名
@@ -37,6 +37,11 @@ public class User extends BaseEntity {
      * 昵称
      */
     private String nickname;
+
+    /**
+     * 头像
+     */
+    private String avatar;
 
     /**
      * 状态: 0正常, 1禁用

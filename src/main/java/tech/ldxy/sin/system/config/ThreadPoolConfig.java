@@ -1,5 +1,7 @@
 package tech.ldxy.sin.system.config;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +19,8 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  */
 @Configuration
 @ConfigurationProperties(prefix = "sin.config.thread-pool")
+@Getter
+@Setter
 public class ThreadPoolConfig {
 
     /**
@@ -33,30 +37,6 @@ public class ThreadPoolConfig {
      * 线程池维护线程最小数量 默认10
      */
     private int corePoolSize = 10;
-
-    public int getKeepAliveSeconds() {
-        return keepAliveSeconds;
-    }
-
-    public void setKeepAliveSeconds(int keepAliveSeconds) {
-        this.keepAliveSeconds = keepAliveSeconds;
-    }
-
-    public int getMaxPoolSize() {
-        return maxPoolSize;
-    }
-
-    public void setMaxPoolSize(int maxPoolSize) {
-        this.maxPoolSize = maxPoolSize;
-    }
-
-    public int getCorePoolSize() {
-        return corePoolSize;
-    }
-
-    public void setCorePoolSize(int corePoolSize) {
-        this.corePoolSize = corePoolSize;
-    }
 
     @Bean(name = "publicThreadPool")
     protected ThreadPoolTaskExecutor taskExecutor() {

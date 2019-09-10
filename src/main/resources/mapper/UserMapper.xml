@@ -4,7 +4,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, login_name, password, nickname, status, create_uid, update_uid, create_time, update_time
+        id, login_name, password, nickname, avatar, status, create_uid, update_uid, create_time, update_time
     </sql>
     
     <select id="selectByLoginName" resultType="tech.ldxy.sin.system.model.entity.User">

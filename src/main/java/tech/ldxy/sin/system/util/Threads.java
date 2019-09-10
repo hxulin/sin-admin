@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
- * 线程相关工具类.
+ * 线程相关工具类
  *
  * @author ruoyi
  */

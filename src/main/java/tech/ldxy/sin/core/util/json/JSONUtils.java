@@ -14,17 +14,7 @@ public final class JSONUtils {
             // 禁用循环引用检测
             SerializerFeature.DisableCircularReferenceDetect,
             // 时间类型格式化为 yyyy-MM-dd HH:mm:ss
-            SerializerFeature.WriteDateUseDateFormat,
-            // 显示空字段
-            SerializerFeature.WriteMapNullValue,
-            // 字符串类型字段为null时, 输出"", 而非null
-            SerializerFeature.WriteNullStringAsEmpty,
-            // List类型字段为null时, 输出[], 而非null
-            SerializerFeature.WriteNullListAsEmpty,
-            // 数值字段如果为null, 输出为0, 而非null
-            // SerializerFeature.WriteNullNumberAsZero,
-            // Boolean字段如果为null, 输出为false, 而非null
-            SerializerFeature.WriteNullBooleanAsFalse
+            SerializerFeature.WriteDateUseDateFormat
     };
 
     private JSONUtils() {
