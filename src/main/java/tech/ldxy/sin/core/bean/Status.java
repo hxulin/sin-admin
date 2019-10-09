@@ -10,7 +10,7 @@ import lombok.Getter;
 @Getter
 public enum Status {
 
-    SUCCESS(0, "操作成功。"),
+    SUCCESS(0, "请求成功。"),
     NOT_VALID_PARAM(400, "提交的参数有误，数据加载失败。"),
     NOT_LOGIN(401, "用户尚未登录。"),
     FORBIDDEN(403, "权限不足，拒绝访问。"),

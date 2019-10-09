@@ -33,7 +33,7 @@ public class AccountController implements BusinessExceptionAware {
     @Autowired
     private IUserService userService;
 
-    @GetMapping("/static/images/securityCode.png")
+    @GetMapping("/db/images/securityCode.png")
     public void code(HttpServletResponse response) throws IOException {
         // 设置响应的类型格式为图片格式
         response.setContentType("image/png");

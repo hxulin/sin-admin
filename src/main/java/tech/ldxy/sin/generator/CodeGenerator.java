@@ -11,7 +11,11 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.IColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.*;
 import java.util.*;
 
 /**
@@ -22,6 +26,23 @@ import java.util.*;
 public enum CodeGenerator {
 
     INSTANCE;
+
+    private static final String[] CONFIG_FILE_NAME = {"application-dev.yml", "application.yml"};
+
+    private static final Map<String, String> DB_CONFIG = new HashMap<>();
+
+    static {
+        try {
+            for (String configFileName : CONFIG_FILE_NAME) {
+                Resource resource = new ClassPathResource(configFileName);
+                Yaml yaml = new Yaml();
+                Map<String, Map<String, Map<String, Map<String, String>>>> config = yaml.load(resource.getInputStream());
+                DB_CONFIG.putAll(config.get("spring").get("datasource").get("druid"));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * 获取项目根目录
@@ -117,10 +138,10 @@ public enum CodeGenerator {
                         return super.processTypeConvert(globalConfig, fieldType);
                     }
                 })
-                .setDriverName("com.mysql.cj.jdbc.Driver")
-                .setUsername("root")
-                .setPassword("12345678")
-                .setUrl("jdbc:mysql:///sin_admin?characterEncoding=utf8&serverTimezone=UTC&useSSL=false");
+                .setDriverName(DB_CONFIG.get("driver-class-name"))
+                .setUrl(DB_CONFIG.get("url"))
+                .setUsername(DB_CONFIG.get("username"))
+                .setPassword(DB_CONFIG.get("password"));
     }
 
     /**

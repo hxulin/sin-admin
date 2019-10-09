@@ -1,6 +1,7 @@
 package tech.ldxy.sin.core.bean;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import java.util.Map;
  * @author hxulin
  */
 @Data
+@NoArgsConstructor
 public class ApiResponse<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -21,6 +23,8 @@ public class ApiResponse<T> implements Serializable {
     private String msg;
 
     private T data;
+
+    private transient Map<String, Object> content;
 
     private ApiResponse(int code, String msg) {
         this.code = code;
@@ -48,6 +52,16 @@ public class ApiResponse<T> implements Serializable {
         Map<String, Object> data = new HashMap<>();
         data.put(key, value);
         return new ApiResponse<>(Status.SUCCESS.getCode(), Status.SUCCESS.getMsg(), data);
+    }
+
+    @SuppressWarnings("unchecked")
+    public ApiResponse<?> addDataItem(String key, Object value) {
+        if (content == null) {
+            content = new HashMap<>();
+            this.data = (T) content;
+        }
+        content.put(key, value);
+        return this;
     }
 
     public static ApiResponse<?> fail() {

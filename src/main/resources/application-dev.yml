@@ -3,6 +3,8 @@ server:
 spring:
   datasource:
     druid:
+      url: jdbc:mysql:///sin_admin?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+      username: root
       password: 12345678
 mybatis-plus:
   configuration:
@@ -19,3 +21,8 @@ sin:
     captcha-expire-time: 10
     # 登录密码进行MD5混淆加密的盐值
     login-password-salt:
+    #线程池
+    thread-pool:
+      core-pool-size: 5
+      max-pool-size: 15
+      keep-alive-seconds: 2000
