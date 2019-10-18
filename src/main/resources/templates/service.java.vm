@@ -3,7 +3,7 @@ package ${package.Service};
 import ${superServiceClassPackage};
 
 import ${package.Entity}.${entity};
-import tech.ldxy.sin.core.exception.BusinessExceptionAware;
+import tech.ldxy.sin.framework.exception.BusinessExceptionAware;
 
 /**
  * 功能描述:

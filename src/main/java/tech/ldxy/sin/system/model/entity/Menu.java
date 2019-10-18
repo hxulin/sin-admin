@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import tech.ldxy.sin.core.model.entity.BaseEntity;
+import tech.ldxy.sin.framework.model.entity.BaseEntity;
 
 import java.util.Date;
 
@@ -21,7 +21,7 @@ import java.util.Date;
 @TableName("sys_menu")
 public class Menu extends BaseEntity {
 
-    private static final long serialVersionUID = 5850498493669676680L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 父级菜单编号

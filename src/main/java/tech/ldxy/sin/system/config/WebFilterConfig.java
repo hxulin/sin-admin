@@ -3,7 +3,7 @@ package tech.ldxy.sin.system.config;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import tech.ldxy.sin.core.web.filter.XssFilter;
+import tech.ldxy.sin.framework.web.filter.XssFilter;
 import tech.ldxy.sin.system.web.filter.TokenFilter;
 
 /**

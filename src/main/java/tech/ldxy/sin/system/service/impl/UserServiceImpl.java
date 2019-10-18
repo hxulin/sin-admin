@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.ldxy.sin.core.bean.Const;
+import tech.ldxy.sin.framework.bean.Const;
 import tech.ldxy.sin.system.context.UserContext;
 import tech.ldxy.sin.system.mapper.UserMapper;
 import tech.ldxy.sin.system.mapper.UserRoleMapper;

@@ -3,16 +3,16 @@ package tech.ldxy.sin.system.web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import tech.ldxy.sin.core.bean.ApiResponse;
-import tech.ldxy.sin.core.bean.Status;
-import tech.ldxy.sin.core.exception.BusinessExceptionAware;
-import tech.ldxy.sin.core.util.Captcha;
-import tech.ldxy.sin.core.util.UUIDUtils;
+import tech.ldxy.sin.framework.bean.ApiResponse;
+import tech.ldxy.sin.framework.bean.Status;
+import tech.ldxy.sin.framework.exception.BusinessExceptionAware;
+import tech.ldxy.sin.framework.util.Captcha;
+import tech.ldxy.sin.framework.util.UUIDUtils;
 import tech.ldxy.sin.system.auth.AuthType;
 import tech.ldxy.sin.system.auth.Resources;
 import tech.ldxy.sin.system.common.Constant;
 import tech.ldxy.sin.system.context.UserContext;
-import tech.ldxy.sin.core.util.IpUtils;
+import tech.ldxy.sin.framework.util.IpUtils;
 import tech.ldxy.sin.system.service.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +33,7 @@ public class AccountController implements BusinessExceptionAware {
     @Autowired
     private IUserService userService;
 
-    @GetMapping("/db/images/securityCode.png")
+    @GetMapping("/static/images/securityCode.png")
     public void code(HttpServletResponse response) throws IOException {
         // 设置响应的类型格式为图片格式
         response.setContentType("image/png");
@@ -72,7 +72,7 @@ public class AccountController implements BusinessExceptionAware {
 
     @GetMapping("/ip")
     @ResponseBody
-    @Resources(auth = AuthType.AUTH)
+    @Resources(name = "获取客户端IP地址", auth = AuthType.AUTH)
     public ApiResponse clientIp(HttpServletRequest request) {
         return ApiResponse.successOfData(IpUtils.getIpAddr(request));
     }
@@ -92,7 +92,7 @@ public class AccountController implements BusinessExceptionAware {
 
     @GetMapping("/test2")
     @ResponseBody
-    @Resources(auth = AuthType.AUTH)
+    @Resources(name = "测试方法二", auth = AuthType.AUTH)
     public ApiResponse test() {
         throw error(Status.NOT_LOGIN);
 //        return ApiResponse.success();

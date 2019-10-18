@@ -2,7 +2,7 @@ package tech.ldxy.sin.system.model.vo;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import tech.ldxy.sin.core.model.entity.BaseEntity;
+import tech.ldxy.sin.framework.model.entity.BaseEntity;
 
 import java.util.Date;
 
@@ -15,7 +15,12 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 public class LoginInfo extends BaseEntity {
 
-    private static final long serialVersionUID = -5252587862968558687L;
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 操作轨迹编号
+     */
+    private String trailId;
 
     private String loginName;
 

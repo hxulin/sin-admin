@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import tech.ldxy.sin.core.bean.ApiResponse;
+import tech.ldxy.sin.framework.bean.ApiResponse;
 import tech.ldxy.sin.system.model.entity.Menu;
 import tech.ldxy.sin.system.service.IMenuService;
 

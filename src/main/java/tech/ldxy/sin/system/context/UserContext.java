@@ -2,14 +2,12 @@ package tech.ldxy.sin.system.context;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
-import tech.ldxy.sin.core.bean.Status;
-import tech.ldxy.sin.core.util.IpUtils;
-import tech.ldxy.sin.core.util.MD5;
-import tech.ldxy.sin.core.util.encryption.AESUtils;
+import tech.ldxy.sin.framework.bean.Status;
+import tech.ldxy.sin.framework.util.IpUtils;
+import tech.ldxy.sin.framework.util.MD5;
+import tech.ldxy.sin.framework.util.encryption.AESUtils;
 import tech.ldxy.sin.system.common.Constant;
 import tech.ldxy.sin.system.config.SinConfig;
-import tech.ldxy.sin.system.manager.AsyncManager;
-import tech.ldxy.sin.system.manager.factory.AsyncFactory;
 import tech.ldxy.sin.system.model.entity.User;
 import tech.ldxy.sin.system.model.vo.LoginInfo;
 import tech.ldxy.sin.system.util.SinAssert;
@@ -83,8 +81,6 @@ public final class UserContext {
         LoginInfo loginInfo = user.convert(LoginInfo.class);
         loginInfo.setLoginTime(current);
         loginInfo.setLoginIp(loginIp);
-        // 异步记录登录日志
-        AsyncManager.execute(AsyncFactory.recordLoginLog(loginInfo));
         redisTemplate.opsForValue().set(TOKEN_PREFIX + token, loginInfo, sinConfig.getTokenExpireTime(), TimeUnit.MINUTES);
         return token;
     }
@@ -107,7 +103,13 @@ public final class UserContext {
      * 获取当前用户的登录信息
      */
     public static LoginInfo getCurrentLoginInfo() {
-        Object token = ContextManager.getAttribute(Constant.TOKEN_KEY);
+        return getCurrentLoginInfo(ContextManager.getAttribute(Constant.TOKEN_KEY));
+    }
+
+    /**
+     * 根据 Token 获取当前登录信息
+     */
+    public static LoginInfo getCurrentLoginInfo(String token) {
         SinAssert.INSTANCE.assertNotNull(token, Status.NOT_LOGIN);
         Object loginInfo = redisTemplate.opsForValue().get(TOKEN_PREFIX + token);
         SinAssert.INSTANCE.assertNotNull(loginInfo, Status.NOT_LOGIN);

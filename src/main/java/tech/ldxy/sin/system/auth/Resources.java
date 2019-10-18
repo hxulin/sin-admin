@@ -6,13 +6,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 功能描述: 该注解贴在 Controller 类或 Controller 类的方法上, 用于标识权限校验
+ * 功能描述: 该注解贴在 Controller 类的方法上, 用于标识权限校验
  *
  * @author hxulin
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Resources {
+    String name();
     AuthType auth() default AuthType.OPEN;
-    String name() default "";
 }

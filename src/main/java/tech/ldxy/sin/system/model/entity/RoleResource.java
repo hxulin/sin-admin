@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import tech.ldxy.sin.core.model.entity.BaseEntity;
+import tech.ldxy.sin.framework.model.entity.BaseEntity;
 
 /**
  * 功能描述:
@@ -17,7 +17,7 @@ import tech.ldxy.sin.core.model.entity.BaseEntity;
 @TableName("sys_role_resource")
 public class RoleResource extends BaseEntity {
 
-    private static final long serialVersionUID = -394665207030189517L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 角色ID

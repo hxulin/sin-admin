@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import tech.ldxy.sin.core.model.entity.BaseEntity;
+import tech.ldxy.sin.framework.model.entity.BaseEntity;
 
 import java.util.Date;
 
@@ -21,7 +21,7 @@ import java.util.Date;
 @TableName("sys_user")
 public class User extends BaseEntity {
 
-    private static final long serialVersionUID = -713774115493995838L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 登录名

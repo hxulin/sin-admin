@@ -29,14 +29,14 @@ public enum CodeGenerator {
 
     private static final String[] CONFIG_FILE_NAME = {"application-dev.yml", "application.yml"};
 
-    private static final Map<String, String> DB_CONFIG = new HashMap<>();
+    private static final Map<String, Object> DB_CONFIG = new HashMap<>();
 
     static {
         try {
             for (String configFileName : CONFIG_FILE_NAME) {
                 Resource resource = new ClassPathResource(configFileName);
                 Yaml yaml = new Yaml();
-                Map<String, Map<String, Map<String, Map<String, String>>>> config = yaml.load(resource.getInputStream());
+                Map<String, Map<String, Map<String, Map<String, Object>>>> config = yaml.load(resource.getInputStream());
                 DB_CONFIG.putAll(config.get("spring").get("datasource").get("druid"));
             }
         } catch (IOException e) {
@@ -138,10 +138,10 @@ public enum CodeGenerator {
                         return super.processTypeConvert(globalConfig, fieldType);
                     }
                 })
-                .setDriverName(DB_CONFIG.get("driver-class-name"))
-                .setUrl(DB_CONFIG.get("url"))
-                .setUsername(DB_CONFIG.get("username"))
-                .setPassword(DB_CONFIG.get("password"));
+                .setDriverName(String.valueOf(DB_CONFIG.get("driver-class-name")))
+                .setUrl(String.valueOf(DB_CONFIG.get("url")))
+                .setUsername(String.valueOf(DB_CONFIG.get("username")))
+                .setPassword(String.valueOf(DB_CONFIG.get("password")));
     }
 
     /**
@@ -168,7 +168,7 @@ public enum CodeGenerator {
                 .setNaming(NamingStrategy.underline_to_camel)// 表名生成策略
                 // .setInclude(new String[] { "user" }) // 需要生成的表
                 // 自定义实体父类
-                .setSuperEntityClass("tech.ldxy.sin.core.model.entity.BaseEntity")
+                .setSuperEntityClass("tech.ldxy.sin.framework.model.entity.BaseEntity")
                 // 自定义实体, 公共字段
                 .setSuperEntityColumns("id")
                 .setTableFillList(tableFillList)

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tech.ldxy.sin.core.model.entity.BaseEntity;
+import tech.ldxy.sin.framework.model.entity.BaseEntity;
 
 import java.util.Date;
 
@@ -19,7 +19,7 @@ import java.util.Date;
 @TableName("sys_resource")
 public class Resource extends BaseEntity {
 
-    private static final long serialVersionUID = 5932796021874405080L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 资源名称

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-import tech.ldxy.sin.core.bean.ApiResponse;
+import tech.ldxy.sin.framework.bean.ApiResponse;
 
 import java.util.*;
 

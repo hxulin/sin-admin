@@ -1,7 +1,7 @@
 package tech.ldxy.sin.system.util;
 
-import tech.ldxy.sin.core.bean.Status;
-import tech.ldxy.sin.core.exception.BusinessExceptionAware;
+import tech.ldxy.sin.framework.bean.Status;
+import tech.ldxy.sin.framework.exception.BusinessExceptionAware;
 
 /**
  * 功能描述:

@@ -12,4 +12,16 @@ public interface Constant {
      */
     String TOKEN_KEY = "Sin-Token";
 
+    /**
+     * 系统配置常量键值
+     */
+    interface Conf {
+
+        /**
+         * 记录库表更新的 SQL 版本号
+         */
+        String DB_SCHEMA_VERSION = "DB_SCHEMA_VERSION";
+
+    }
+
 }
